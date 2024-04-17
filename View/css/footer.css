@@ -1,0 +1,71 @@
+/* Footer Styles */
+
+.footer {
+    background-color: #fff; /* Change background color to white */
+    color: #222; /* Change text color to a dark color for better readability */
+    padding: 50px 0;
+}
+
+.footer .container {
+    position: relative;
+}
+
+.footer-menu-item li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.footer-menu-item li a {
+    color: #222; /* Change link color to a dark color for better contrast */
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footer-menu-item li a:hover {
+    color: #f39c12;
+}
+
+.hm-footer-copyright p {
+    margin: 0;
+}
+
+.footer-social a {
+    color: #222; /* Change social media link color to a dark color for better contrast */
+    margin-right: 10px;
+}
+
+.footer-social a:hover {
+    color: #f39c12;
+}
+
+.return-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #f39c12;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.return-to-top:hover {
+    background-color: #e67e22;
+}
+
+/* Media Queries */
+
+@media (max-width: 767px) {
+    .footer-menu-item li {
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .footer-social {
+        margin-top: 20px;
+    }
+}
