@@ -1,16 +1,22 @@
 <?php
-include 'C:\xampp\htdocs\projet\controller\forumC.php';
-$c = new forumC();
-$forumList = $c->listForum();
+include_once 'C:\xampp\htdocs\projet\controller\messageC.php';
+include_once 'C:\xampp\htdocs\projet\controller\forumC.php'; // Include the comment controller
+$c_comment = new messageC(); // Create an instance of the comment controller
+$c_forum = new forumC();
+// Assuming you have some sort of authentication system where you know the current user's ID
+$user_id = 3; // Example user ID, replace with actual user ID from your authentication system
+//$forum_id = $_POST['forum_id'];
+$forum_id = $_GET['id_forum'];
+$forum = $c_forum->getForumById($forum_id);
+$my_comments = $c_comment->getCommentsByUserId($user_id); // Get comments by user ID
 
 ?>
+
 <!doctype html>
 <html class="no-js" lang="en">
-
-    <head>
-        
-        <!-- meta data -->
-        <meta charset="utf-8">
+<head>
+     <!-- meta data -->
+     <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -59,7 +65,10 @@ $forumList = $c->listForum();
 			<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+    <!-- meta data -->
+    <!-- Add your meta tags, title, CSS, and JavaScript includes here -->
 <style>
+    <style>
     table {
     margin-top:  100px;  
     width: 100%;
@@ -83,8 +92,10 @@ table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 </style>
-    </head>
-    <body>
+</style>
+</head>
+<body>
+<body>
         <!-- top-area Start -->
 		<section class="top-area">
 			<div class="header-area">
@@ -122,31 +133,31 @@ table tr:nth-child(even) {
 
 		</section><!-- /.top-area-->
 		<!-- top-area End -->
-        
+        <h2>My Comments:</h2>
         <table >
   <thead>
     <tr>
-      <th >Titre</th>
-      <th >Description</th>
-      <th >Date de création</th>
-      <th ></th>
+      <th >contenu</th>
+      <th >Date de poste</th>
+      <th>titre de forum</th>
+      
+      
     </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($forumList as $forum):?>
-      <tr style="background-color: #f2f2f2;">
-        <td ><?php echo $forum['titre'];?></td>
-        <td ><?php echo $forum['description'];?></td>
-        <td ><?php echo $forum['date_creation'];?></td>
-        <td><a href="comment.php?id_forum=<?php echo $forum['id_forum']; ?>">Add comment</a></td>
-
-      </tr>
-    <?php endforeach;?>
-  </tbody>
-</table>
-<input type="button" value="Ajouter un forum" onclick="window.location='add_forum.php'" >
-
-
-    <script src="controle.js"></script>
-    </body>
+  </thead>   
+    
+    <?php if(!empty($my_comments)): ?>
+        <tr style="background-color: #f2f2f2;">
+            <?php foreach ($my_comments as $comment): ?>
+                <td><?php echo $comment['contenu']; ?></td>
+                <td ><?php echo $comment['date_poste'];?></td>
+                <td ><?php echo $forum['titre'];?></td>
+                </tr>
+                
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>No comments yet.</p>
+    <?php endif; ?>
+    
+</body>
 </html>

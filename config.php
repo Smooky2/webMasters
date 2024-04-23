@@ -17,7 +17,7 @@ class Config
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                     ]
                 );
-                echo "connected successfully";
+                //echo "connected successfully";
             } catch (PDOException $e) {
                 die('Error: ' . $e->getMessage());
             }

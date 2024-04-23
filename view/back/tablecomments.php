@@ -1,3 +1,20 @@
+<?php
+include 'C:\xampp\htdocs\projet\controller\messageC.php';
+
+$messageC = new messageC();
+
+// Get the publication ID from the URL
+$id_forum = isset($_GET['id_forum']) ? $_GET['id_forum'] : null;
+
+if (!$id_forum) {
+    // Handle the case when no ID is provided
+    header("Location: tablecomments.php");
+    exit();
+}
+
+// Get comments for the publication
+$message = $messageC->listCommentsForforum($id_forum);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +46,35 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+table {
+    margin-top:  100px;  
+    width: 60%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-left: 70px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+
+table th,
+table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    
+}
+
+table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+</style>
 </head>
 
 <body>
@@ -73,9 +119,8 @@
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="ajout.php" class="dropdown-item">Ajout</a>
                             <a href="modifier_forum.php" class="dropdown-item">Modifier_forum</a>
-                            <!--<a href="supp_forum.php" class="dropdown-item">Suppresion </a>-->
+                            
                             <a href="view_forum.php" class="dropdown-item">affichage </a>
-
                         </div>
                     </div>
                     <a href="evenement.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>entité evenement</a>
@@ -94,8 +139,11 @@
             </nav>
         </div>
         <!-- Sidebar End -->
-
-
+        
+        
+                    
+               
+    
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
@@ -186,9 +234,35 @@
                     </div>
                 </div>
             </nav>
-            <!-- Navbar End -->
+            
 
+        <table class="">
+                                    <thead>
+                                        <tr>
+                                        <th scope="col">ID message</th>
+                                            <th scope="col">ID User</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Text</th>
+                                            <th scope="col">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($message as $message) : ?>
+                                        <tr>
+                                        <th scope="row"><?= htmlspecialchars($message['id_message']) ?></th>
+                                            <th scope="row"><?= htmlspecialchars($message['id_user']) ?></th>
+                                            <td><?= htmlspecialchars($message['date_poste']) ?></td>
+                                            <td><?= htmlspecialchars($message['contenu']) ?></td>           
+                                            <td>
+                                                <button type="button" class="btn btn-danger m-2"><a href="delete_comment.php?id_message=<?= $message['id_message']; ?>">Delete</a></button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                                <script src="controle.js"></script>
 
+          
 
 
         <!-- Back to Top -->

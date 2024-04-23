@@ -4,14 +4,14 @@ $c = new forumC();
 $forumList = $c->listForum();
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supp_forum'])) {
+/*if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supp_forum'])) {
     $idToDelete = $_POST['supp_forum'];
     // Call your method to delete the publication using $idToDelete
     // Example: $c->deletePublication($idToDelete);
     // Redirect or refresh the page after deletion
     header("Location: $_SERVER[PHP_SELF]");
     exit();
-}
+}*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -255,8 +255,11 @@ table tr:nth-child(even) {
         <td>
            <button type="button" class="#"><a href="supp_forum.php?id_forum=<?php echo $forum['id_forum']; ?>">Delete</a></button>
         </td>
-        
-        
+        <td>
+        <button type="button" class=""><a href="tablecomments.php?id_forum=<?= $forum['id_forum']; ?>">Comments</a></button>
+        </td>
+        <td><a href="statistics.php"style="background-color: blue; color: white; padding: 8px 12px; border-radius: 3px;">Statistics</a>
+                                        </td>
       </tr>
     <?php endforeach;?>
   </tbody>

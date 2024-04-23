@@ -1,9 +1,24 @@
 <?php
-include 'C:\xampp\htdocs\projet\config.php';
+include_once 'C:\xampp\htdocs\projet\config.php';
 
 class forumc{
 
+    public function getForumById($id_forum)
+    {
+        $db = Config::getConnexion();
 
+        try {
+            $query = $db->prepare('SELECT * FROM forum WHERE id_forum = :id_forum');
+            $query->bindValue(':id_forum', $id_forum);
+            $query->execute();
+
+            return $query->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            // Add an error message for debugging
+            echo 'Error: ' . $e->getMessage();
+            return null; // Return null to indicate failure
+        }
+    }
 public function addForum($forum)
 {
     $sql = "INSERT INTO forum (id_forum, titre, description, date_creation,createur_forum_id) VALUES (:id_forum,:titre,:description,:date_creation,:createur_forum_id)";
@@ -69,8 +84,6 @@ public function listForum()
         // Handle exceptions
         die('Error:' . $e->getMessage());
     }
-
-
 }
 }
 
