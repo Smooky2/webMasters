@@ -1,11 +1,17 @@
 <?php
 require_once 'C:\xampp\htdocs\projet\Controller\reclamationC.php';
 require_once 'C:\xampp\htdocs\projet\Controller\reponseC.php';
-$reclamationC = new reclamationC();
-$listereclamations = $reclamationC->afficherreclamations();
-$reponseC = new reponseC();
 
-?>
+$reponseC = new reponseC();
+$listereponses = $reponseC->afficherby($_GET["IDR"]); // Fetching responses, adjust this as needed
+
+
+if (!empty($listereponses)) {
+    $reponse = $listereponses[0]; // Considering you want to display only one response
+
+    // Display the response in the middle of the page
+    ?>
+
 
 <!doctype html>
 <html class="no-js" lang="en">
@@ -101,136 +107,72 @@ $reponseC = new reponseC();
 		    <div class="clearfix"></div>
 
 		</section><!-- /.top-area-->
-		<!-- top-area End -->
-<a style='  text-decoration: none;
-            color: #fff;
-            /* White color */
-            background-color: #e74c3c;
-            /* Red color */
-            padding: 10px 15px;
-            border-radius: 5px;' href="ajoutreclamation.php">Ajouter une reclamation</a>
-        <center>
-            <h1>Liste des reclamations</h1>
-        </center>
-
-        <table class="my-table" border="1" align="center" id="reclamation-table">
-            <tr>
-
-                <th>Type</th>
-                <th>Date</th>
-                <th>Sujet</th>
-                <th>Description</th>
-                <th>Etat</th>
-                <th>Reponse</th>
-                <th>Actions</th>
-
-            </tr>
-            <?php foreach ($listereclamations as $reclamation) { 
-                          $response = $reponseC->getResponseByReclamationId($reclamation['IDR']);
-                          ?>
-                <tr>
-
-                    <td><?php echo $reclamation['typer']; ?></td>
-                    <td><?php echo $reclamation['dater']; ?></td>
-                    <td><?php echo $reclamation['sujet']; ?></td>
-                    <td><?php echo $reclamation['dess']; ?></td>
-                    <td>
-
-
-                    <?php
-$statut = $reclamation['statut'];
-if ($statut === "pas encore") {
-    echo "Pas encore traité";
-} elseif ($statut === "en cour de traitement") {
-    echo "En cours de traitement";
-} elseif ($statut === "traité") {
-    echo "Traité";
-}
-?>
-
-
-
-                    </td>
-                    <td>  <?php if ($response) { ?>
-            <a style='  
-                text-decoration: none;
-                color: #fff;
-                background-color: purple;
-                padding: 10px 15px;
-                border-radius: 5px;
-            ' href="afficherreponse.php?IDR=<?php echo $reclamation['IDR']; ?>">
-                voir reponse
-            </a>
-        <?php } else { ?>
-            <span style="color: red;">Il n'y a pas de réponse pour le moment.</span>
-        <?php } ?>
-    </td></td>
-                    <td>
-                        <form method="POST" action="modifierreclamation.php">
-                            <input type="submit" name="Modifier" value="Modifier">
-                            <input type="hidden" value=<?PHP echo $reclamation['IDR']; ?> name="IDR">
-                        </form>
-
-
-
-                        <a style='  text-decoration: none;
-            color: #fff;
-            /* White color */
-            background-color: #e74c3c;
-            /* Red color */
-            padding: 10px 15px;
-            border-radius: 5px;' href="supprimerreclamation.php?IDR=<?php echo $reclamation['IDR']; ?>">annuler</a>
-
-
-
-                </tr>
-            <?php } ?>
-        </table>
-
-
+<title>Page de réponse</title>
         <style>
-            .my-table {
-                background-color: white;
-                border-collapse: collapse;
+     
+
+            .response-container {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                max-width: 600px;
                 width: 100%;
-                font-size: 1em;
-                font-family: Arial, sans-serif;
-                color: #333;
             }
 
-            .my-table th,
-            .my-table td {
-                padding: 0.5em;
-                border: 1px solid #ccc;
+            .response-details {
+                margin-bottom: 15px;
             }
 
-            .my-table th {
-                background-color: #f7f7f7;
-                text-align: left;
+            label {
                 font-weight: bold;
             }
 
-            .my-table td {
-                text-align: left;
-            }
-
-            .my-table td form {
-                display: inline-block;
+            input[type="text"],
+            textarea {
+                width: 100%;
+                padding: 8px;
+                margin-top: 5px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                box-sizing: border-box;
             }
 
             input[type="submit"] {
-                background-color: #4CAF50;
-                /* Green color */
-                color: white;
+                background-color: purple;
+                color: #fff;
                 padding: 10px 15px;
                 border: none;
                 border-radius: 5px;
                 cursor: pointer;
             }
-
-            /* Style for the "annuler" link */
-         
         </style>
-    
-</body>
-</html>
+    </head>
+<center>
+        <div  class="response-container">
+            <h1>Réponse</h1>
+            <div class="response-details">
+                <label for="date">Date:</label>
+                <input type="text" name="date" value="<?php echo $reponse['dater']; ?>" readonly><br>
+
+                <label for="sujet">Sujet:</label>
+                <input type="text" name="sujet" value="<?php echo $reponse['sujet']; ?>" readonly><br>
+
+                <label for="description">Description:</label>
+                <textarea name="description" readonly><?php echo $reponse['dess']; ?></textarea><br>
+            </div>
+
+            <form action="afficherreclamation.php" method="get">
+                <input type="hidden" name="IDR" value="<?php echo $reponse['IDR']; ?>">
+                <input type="submit" value="Retour">
+            </form>
+        </div>
+		</center>
+    </html>
+    <?php
+} else {
+    // If no responses are available
+    echo "Aucune réponse disponible pour le moment.";
+}
+?>
