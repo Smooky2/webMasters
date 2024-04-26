@@ -62,7 +62,7 @@ class EventC
                 dateE = :dateE, 
                 heureE = :heureE, 
                 lieuE = :lieuE, 
-                descpE = :descpE, 
+                descrpE = :descrpE, 
                 categoE = :categoE, 
                 fraisE = :fraisE
                 WHERE idE = :idE'
@@ -73,7 +73,7 @@ class EventC
                 'dateE' => $event->getDateE()->format('Y-m-d'),
                 'heureE' => $event->getheureE()->format('H:i:s'),
                 'lieuE' => $event->getLieuE(),
-                'descpE' => $event->getdescrpE(),
+                'descrpE' => $event->getdescrpE(),
                 'categoE' => $event->getgategoE(),
                 'fraisE' => $event->getFraisE()
             ]);

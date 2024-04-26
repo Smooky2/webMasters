@@ -6,7 +6,7 @@ $error= "";
 $event = null;
 
 // create an instance of the controller
-echo $_POST["idE"];
+//echo $_POST["idE"];
 $eventC = new EventC();
 if (
     isset($_POST["idE"]) &&
@@ -271,7 +271,7 @@ if (
     <!-- Submit Button -->
     <input type="submit" value="Save">
      <!--<button type="submit" class="btn btn-primary w-100">S'inscrire</button>-->
-    <!-- <script src="sriptEvent.js"></script>-->
+    <script src="sriptEvent.js"></script>
 </form>
 
 

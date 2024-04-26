@@ -1,5 +1,7 @@
 <?php
 include '..\aide\EventC.php';
+
+
 $eventC = new EventC();
 $list = $eventC->listEvent();
 ?>
@@ -174,6 +176,7 @@ $list = $eventC->listEvent();
                                 <td>
                                     <a href="../deleteEvent.php?id=<?= $event['idE']; ?>" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
+                               
                                 
                             </tr>
                         <?php 
@@ -182,7 +185,14 @@ $list = $eventC->listEvent();
                         ?>
                     </tbody>
                 </table>
-
+                </div>
+               <!-- Centered Search Form -->
+<div class="text-center">
+    <form method="POST" action="../backoffice/searchReview.php">
+        <button type="submit" class="btn btn-primary btn-sm" name="search">Search Reviews</button>
+        <input type="hidden" value="<?= $rev['idRev']; ?>" name="id">
+    </form>
+</div>
             </div>
         </div>
     <!-- Back to Top Button -->

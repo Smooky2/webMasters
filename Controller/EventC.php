@@ -33,7 +33,7 @@ class EventC
     public function addEvent($event)
     {
         $sql = "INSERT INTO events (idE, nomE, dateE,heureE, lieuE, descpE, categoE, fraisE)  
-        VALUES (:idE, :nomE, :dateE,:heureE, :lieuE, :descpE, :categoE, :fraisE)";
+        VALUES (:idE, :nomE, :dateE,:heureE, :lieuE, :descpE, :categoE, :fraisE,NULL)";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -62,7 +62,7 @@ class EventC
                 dateE = :dateE, 
                 heureE = :heureE, 
                 lieuE = :lieuE, 
-                descpE = :descpE, 
+                descrpE = :descrpE, 
                 categoE = :categoE, 
                 fraisE = :fraisE
                 WHERE idE = :idE'
@@ -73,7 +73,7 @@ class EventC
                 'dateE' => $event->getDateE()->format('Y-m-d'),
                 'heureE' => $event->getheureeE()->format('H:i:s'),
                 'lieuE' => $event->getLieuE(),
-                'descpE' => $event->getDescpE(),
+                'descrpE' => $event->getDescpE(),
                 'categoE' => $event->getCategoE(),
                 'fraisE' => $event->getFraisE()
             ]);

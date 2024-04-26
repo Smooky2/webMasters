@@ -184,7 +184,10 @@ $list = $eventC->listEvent();
                                 <td><?= $event['descrpE']; ?></td>
                                 <td><?= $event['categoE']; ?></td>
                                 <td><?= $event['fraisE']; ?></td>
-                               
+                                <td><a href="add_rate.php?id=<?= $event['idE']; ?>" class="btn btn-danger btn-sm">review</a>
+                                    
+                                </td>
+
                             </tr>
                         <?php 
                         }

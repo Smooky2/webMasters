@@ -9,8 +9,11 @@ class Event
     private ?string $descrpE =null;
     private ?string $categoE =null;
     private ?string $fraisE =null;
+    //private ?string $review =null;
 
-    public function __construct($idE , $b, $c,$h, $d, $e ,$f ,$g)
+
+
+    public function __construct($idE , $b, $c,$h, $d, $e ,$f ,$g/*,$rev=null*/)
     {
         $this->idE = $idE;
         $this->nomE = $b;
@@ -20,6 +23,7 @@ class Event
         $this->descrpE = $e;
         $this->categoE = $f;
         $this->fraisE = $g;
+        //$this->review = $rev;
 
     }
  
