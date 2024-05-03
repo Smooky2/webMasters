@@ -4,9 +4,11 @@ include_once 'C:\xampp\htdocs\projet\controller\forumC.php'; // Include the comm
 $c_comment = new messageC(); // Create an instance of the comment controller
 $c_forum = new forumC();
 // Assuming you have some sort of authentication system where you know the current user's ID
-$user_id = 3; // Example user ID, replace with actual user ID from your authentication system
+$user_id = 1; // Example user ID, replace with actual user ID from your authentication system
 //$forum_id = $_POST['forum_id'];
 $forum_id = $_GET['id_forum'];
+
+//$id_message = $_GET['id_message'];
 $forum = $c_forum->getForumById($forum_id);
 $my_comments = $c_comment->getCommentsByUserId($user_id); // Get comments by user ID
 
@@ -140,6 +142,8 @@ table tr:nth-child(even) {
       <th >contenu</th>
       <th >Date de poste</th>
       <th>titre de forum</th>
+      <th>Suppression</th>
+      
       
       
     </tr>
@@ -151,7 +155,13 @@ table tr:nth-child(even) {
                 <td><?php echo $comment['contenu']; ?></td>
                 <td ><?php echo $comment['date_poste'];?></td>
                 <td ><?php echo $forum['titre'];?></td>
-                </tr>
+                <td><button type="button" class="btn btn-danger m-2"><a href="suppcmntr.php?id_message=<?= $comment['id_message']; ?>">Delete</a></button></td>
+                <td>
+                <button type="button" class="btn btn-danger m-2">
+                <a href="modifier_comment.php?id_message=<?php echo $comment['id_message']; ?>&id_forum=<?php echo $forum['id_forum']; ?>">Modify</a>
+                </button>
+                </td>
+            </tr>
                 
             <?php endforeach; ?>
         </ul>

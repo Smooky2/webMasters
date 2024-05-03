@@ -66,6 +66,7 @@ $labelsJSON = json_encode($labels);
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
@@ -258,14 +259,14 @@ table tr:nth-child(even) {
                 </div>
             </nav>
             <div class="row">
-                        <div class="col-md-6">
+                       <!-- <div class="col-md-6">
                             <h1>Nombres de vue Par Titre de poste</h1>
                             <center>
                                 <div class="mt-3">
                                     <canvas id="myDoughnutChart" style="height: 400px; width: 100%;"></canvas>
                                 </div>
                             </center>
-                        </div>
+                        </div>-->
 
                         <div class="col-md-6">
                             <h1>Nombres Commentaires Par poste</h1>

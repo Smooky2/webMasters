@@ -3,6 +3,15 @@ include 'C:\xampp\htdocs\projet\controller\forumC.php';
 $c = new forumC();
 $forumList = $c->listForum();
 
+if(isset($_POST['triCroissant'])) {
+    $c = new forumC();
+    $forumList = $c->trierforumS('ASC');
+}
+
+if(isset($_POST['triDecroissant'])) {
+    $c = new forumC();
+    $forumList = $c->trierforum('DESC');
+}
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
@@ -121,8 +130,11 @@ table tr:nth-child(even) {
 		    <div class="clearfix"></div>
 
 		</section><!-- /.top-area-->
-		<!-- top-area End -->
-        
+		
+        <form method="POST" action="">
+<input type="submit" name="triCroissant" value="Tri Croissant" class="">
+  <input type="submit" name="triDecroissant" value="Tri Décroissant" class="">
+</form>
         <table >
   <thead>
     <tr>
@@ -144,7 +156,14 @@ table tr:nth-child(even) {
     <?php endforeach;?>
   </tbody>
 </table>
+<form method="POST" action="recherche.php">
 <input type="button" value="Ajouter un forum" onclick="window.location='add_forum.php'" >
+
+<input type="text" id="search" name="titre" placeholder="Search..">
+
+<button type="submit" name="btn-search">Search</button>
+</form>
+
 
 
     <script src="controle.js"></script>

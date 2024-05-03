@@ -1,5 +1,20 @@
+<?php
+include 'C:\xampp\htdocs\projet\controller\forumC.php';
+$c = new forumC();
+$forumList = $c->listForum();
+
+if(isset($_POST['triCroissant'])) {
+    $c = new forumC();
+    $forumList = $c->trierforumS('ASC');
+}
+
+if(isset($_POST['triDecroissant'])) {
+    $c = new forumC();
+    $forumList = $c->trierforum('DESC');
+}
+?>
 <!doctype html>
-<html class="no-js" lang="en">
+<html>
 
     <head>
         
@@ -53,8 +68,64 @@
 			<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <style>
+		.tri {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
 
+.tri:hover {
+    background-color: darkred;
+}
+		.search-form {
+    position: absolute;
+    top: 100px;
+    right: 50px;
+	z-index: 999; 
+}
+
+/* Style for the search container */
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Style for the search input */
+.search-form input[type="text"] {
+    width: 150px; /* Adjust the width as needed */
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+/* Style for the search button */
+.search-form button[type="submit"] {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: red; /* Change the background color as needed */
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Hover effect for the search button */
+.search-form button[type="submit"]:hover {
+ background-color: #0056b3; /* Change the hover background color as needed */
+
+}
+.single-how-works-container {
+    margin-top: 50px; /* Adjust the margin as needed to create space between the search bar and single how works items */
+}
+	</style>
     </head>
+	
     <body>
         <!-- top-area Start -->
 		<section class="top-area">
@@ -69,7 +140,7 @@
 			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 			                    <i class="fa fa-bars"></i>
 			                </button>
-			                <a class="navbar-brand" href="index.html"><img src="C:\xampp\htdocs\projet\view\front\assets\img\logo.png" alt="" style="width: 100px;height: 100px;"></a>
+			                <a class="navbar-brand" href="index.html">esprit<span>discovery</span></a>
 
 			            </div><!--/.navbar-header-->
 			            <!-- End Header Navigation -->
@@ -93,9 +164,119 @@
 
 		</section><!-- /.top-area-->
 		<!-- top-area End -->
-        
+		
+		<form method="POST" action="">
+<input type="submit" name="triCroissant" value="Tri Croissant" class="tri">
+  <input type="submit" name="triDecroissant" value="Tri Décroissant" class="tri">
+</form>
+<div class="search-container">
+		<form method="POST" action="recherche.php" class="search-form">
+    
+        <input type="text" id="search" name="titre" placeholder="Search..">
+        <button type="submit" name="btn-search">Search</button>
+    </div>
+</form>
+        <?php foreach ($forumList as $forum):?>
+            <section id="works" class="works">
+			
+			<div class="single-how-works-container">
+        <div class="col-md-4 col-sm-6">
+							<div class="single-how-works">
+								<div class="single-how-works-icon">
+									<i class="flaticon-lightbulb-idea"></i>
+								</div>
+								<h2><?php echo $forum['titre'];?></h2>
+								<p>
+                                <?php echo $forum['description'];?></p>
+								<p>
+                                 <?php echo $forum['date_creation'];?>
+								 </p>
+								
+								 <a href="comment.php?id_forum=<?php echo $forum['id_forum']; ?>">Add comment</a>
+								
+							</div>
+						</div>
+		</div>
+                        <?php endforeach;?>
+        		
+        </section>
 
 
     <script src="controle.js"></script>
+    <footer id="footer"  class="footer">
+			<div class="container">
+				<div class="footer-menu">
+		           	<div class="row">
+			           	
+			           	<div class="col-sm-9">
+			           		<ul class="footer-menu-item">
+			                    <li class="scroll"><a href="#works">how it works</a></li>
+			                    <li class="scroll"><a href="#explore">explore</a></li>
+			                    <li class="scroll"><a href="#reviews">review</a></li>
+			                    <li class="#"><a href="forum.php">forum</a></li>
+			                    <li class="scroll"><a href="#contact">contact</a></li>
+			                    <li class=" scroll"><a href="#contact">my account</a></li>
+			                </ul><!--/.nav -->
+			           	</div>
+		           </div>
+				</div>
+				<div class="hm-footer-copyright">
+					<div class="row">
+						<div class="col-sm-5">
+							<p>
+								&copy;copyright. designed and developed by <a href="https://www.themesine.com/">themesine</a>
+							</p><!--/p-->
+						</div>
+						<div class="col-sm-7">
+							<div class="footer-social">
+								<span><i class="fa fa-phone"> +1  (222) 777 8888</i></span>
+								<a href="#"><i class="fa fa-facebook"></i></a>	
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-linkedin"></i></a>
+								<a href="#"><i class="fa fa-google-plus"></i></a>
+							</div>
+						</div>
+					</div>
+					
+				</div><!--/.hm-footer-copyright-->
+			</div><!--/.container-->
+
+			<div id="scroll-Top">
+				<div class="return-to-top">
+					<i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+				</div>
+				
+			</div><!--/.scroll-Top-->
+			
+        </footer><!--/.footer-->
+		<!--footer end-->
+		
+		<!-- Include all js compiled plugins (below), or include individual files as needed -->
+
+		<script src="assets/js/jquery.js"></script>
+        
+        <!--modernizr.min.js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+		
+		<!--bootstrap.min.js-->
+        <script src="assets/js/bootstrap.min.js"></script>
+		
+		<!-- bootsnav js -->
+		<script src="assets/js/bootsnav.js"></script>
+
+        <!--feather.min.js-->
+        <script  src="assets/js/feather.min.js"></script>
+
+        <!-- counter js -->
+		<script src="assets/js/jquery.counterup.min.js"></script>
+		<script src="assets/js/waypoints.min.js"></script>
+
+        <!--slick.min.js-->
+        <script src="assets/js/slick.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+		     
+        <!--Custom JS-->
+        <script src="assets/js/custom.js"></script>
     </body>
 </html>

@@ -1,9 +1,35 @@
 <?php
 include_once 'C:\xampp\htdocs\projet\config.php';
+include 'C:\xampp\htdocs\projet\vendor\autoload.php';
 
 
 class messageC
+
 {
+    private function sendEmailNotification($subject, $data)
+    {
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'magicbook.pi@gmail.com';
+            $mail->Password = 'rhtwjrjcrjbmlerk';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+
+            $mail->setFrom('admin@php.com', 'Systeme de notification');
+            $mail->addAddress('bsaiestaieb@gmail.com');
+
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $data;
+
+            $mail->send();
+        } catch (Exception $e) {
+            echo "Le message n'a pas pu être envoyé. Erreur du messager : {$mail->ErrorInfo}";
+        }
+    }
         
     public function getCommentsByForumId($id_forum)
 {
@@ -32,9 +58,9 @@ public function addComment($forum_id, $comment_content,$date_sys)
                 'contenu' => $comment_content,
                 'date_sys' => $date_sys,
                 'id_forum' => $forum_id,
-                'id_user' => 3,
+                'id_user' => 1,
             ]);
-
+            $this->sendEmailNotification("Commentaire ajoute","Un commentaire a été ajouté");
             // Return the ID of the inserted row
             return $db->lastInsertId();
         } catch (PDOException $e) {
@@ -99,7 +125,7 @@ public function deleteComment($id_message)
     }
 }
 
-function getCommentCountsByForum() {
+public function getCommentCountsByForum() {
     try {
         $pdo = config::getConnexion();
         
@@ -122,6 +148,21 @@ function getCommentCountsByForum() {
         throw new Exception("Error fetching comment counts with forum names: " . $e->getMessage());
     }
 }
+public function modifier_comment($id_message,$content,$currentDate)
+    {   /*$id_message = $forum->getidmessage();
+        $contenu = $message->getcontenu();
+        $date_sys = $message->getDateSys();*/
+       
+        // Requête SQL UPDATE
+        $sql = "UPDATE message SET contenu = :contenu, date_poste = :date_sys   WHERE id_message = :id";
+        $db = Config::getConnexion();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':id', $id_message);
+        $stmt->bindParam(':contenu', $content);
+        $stmt->bindParam(':date_sys', $currentDate);
+      
+        $stmt->execute();
+    } 
 
 
 

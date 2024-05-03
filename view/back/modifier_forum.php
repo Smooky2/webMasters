@@ -3,28 +3,24 @@ include 'C:/xampp/htdocs/projet/controller/forumC.php';
 include 'C:/xampp/htdocs/projet/Model/forum.php';
 $forumC = new forumC();
 
-
+$id_forum = isset($_GET['id_forum']) ? $_GET['id_forum'] : null;
 
 // Récupération de l'ID de l'événement et des valeurs modifiées
 if(isset($_POST['submit'])) {
 
-    $id_forum=$_POST['id_forum'];
+  
     $title = isset($_POST['title']) ? $_POST['title'] : '';
     $content = isset($_POST['content']) ? $_POST['content'] : '';
 	$currentDate = date('Y-m-d H:i:s');
 	$id_user = isset($_POST['id_user']) ? $_POST['id_user'] : '';
 
 
-if($id_forum!==null){
 $forum = new forum($id_forum,$title,$content,$currentDate,$id_user); 
 $forumC->modifyforum($forum);
 echo '<script>alert("Modification  réussie");</script>';
 header('Location:modifier_forum.php');
 exit();
-}
-else{
-    echo '<script>alert("Identifiant n est pas valide");</script>';
-}
+
 
 }
 
@@ -130,7 +126,7 @@ else{
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="ajout.php" class="dropdown-item">Ajout</a>
                             <a href="modifier_forum.php" class="dropdown-item">Modifier_forum</a>
-                            <a href="supp_forum.php" class="dropdown-item">Suppresion </a>
+                          
 							<a href="view_forum.php" class="dropdown-item">affichage </a>
                         </div>
                     </div>
@@ -158,8 +154,7 @@ else{
     <div class="custom-form-container">
     <div class="col-sm-6 col-xl-3">
         <form action="" method="post" onsubmit="return validateForm()">
-			<label for="id_forum">ID:</label>
-            <input type="number" id="id_forum" name="id_forum">
+			
             <label for="title">Title:</label>
             <input type="text" id="title" name="title">
             <label for="content">Content:</label>

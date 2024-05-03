@@ -16,7 +16,7 @@ class forumc{
         } catch (PDOException $e) {
             // Add an error message for debugging
             echo 'Error: ' . $e->getMessage();
-            return null; // Return null to indicate failure
+           
         }
     }
 public function addForum($forum)
@@ -85,6 +85,44 @@ public function listForum()
         die('Error:' . $e->getMessage());
     }
 }
+function searchPublications($recherche) {
+    $sql = "SELECT * FROM forum
+            WHERE titre LIKE :recherche 
+            OR description LIKE :recherche";
+
+    $db = config::getConnexion();
+    
+    try {
+        $query = $db->prepare($sql);
+        $query->bindValue(':recherche', '%' . $recherche . '%');
+        $query->execute();
+        $publications = $query->fetchAll();
+        return $publications;
+    } catch (Exception $e) {
+        die('Error: ' . $e->getMessage());
+    }
+}
+function trierforum(){
+    $sql = "SELECT * FROM forum ORDER BY date_creation DESC";
+    $db = config::getConnexion();
+    try {
+        $req = $db->query($sql);
+        return $req;
+    } catch (Exception $e) {
+        echo 'Erreur: ' . $e->getMessage();
+    }
+}
+function trierforumS(){
+    $sql = "SELECT * FROM forum ORDER BY date_creation ASC";
+    $db = config::getConnexion();
+    try {
+        $req = $db->query($sql);
+        return $req;
+    } catch (Exception $e) {
+        echo 'Erreur: ' . $e->getMessage();
+    }
+}
+
 }
 
 

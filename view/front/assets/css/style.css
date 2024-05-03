@@ -46,7 +46,7 @@ body{
     text-transform:initial;
     max-width:1920px;
     margin:0 auto;
-	overflow-x:hidden;
+	
 }
 
 a,a:hover,a:active,a:focus {
@@ -387,6 +387,7 @@ nav.navbar.bootsnav .navbar-toggle i{color: #ff545a;}
 
 .single-how-works{
     text-align: center;
+    top: 100px;
     padding:50px 42px;
     border-radius: 3px;
     box-shadow: 0 0px 5px rgba(71,71,71,.2);

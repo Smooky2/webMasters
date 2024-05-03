@@ -139,7 +139,7 @@ $forumC = new forumC();
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="ajout.php" class="dropdown-item">Ajout</a>
                             <a href="modifier_forum.php" class="dropdown-item">Modifier_forum</a>
-                            <a href="supp_forum.php" class="dropdown-item">Suppresion </a>
+                           
                             <a href="view_forum.php" class="dropdown-item">affichage </a>
                         </div>
                     </div>
