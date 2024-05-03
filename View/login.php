@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } else {
         // JavaScript alert for failed login attempt
-        echo "<script>alert('Login failed. Please check your credentials.');</script>";
+        echo "<script>alert('Login failed Please check your credentials.');</script>";
     }
 }
 ?>

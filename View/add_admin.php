@@ -13,7 +13,7 @@ if(isset($_GET['user_id'])) {
         header("Location: afficheruser.php");
         exit();
     } else {
-        // Handle failure to make the user admin
+        // Handle failuree to make the user admin
         echo "Failed to make the user admin.";
     }
 } else {

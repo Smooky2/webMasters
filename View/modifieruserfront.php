@@ -168,7 +168,7 @@ if (isset($_SESSION['id'])) {
     <!-- Navbar End -->
 
 <style>
-    /* Basic styles, you can modify these according to your design */
+    /* Basic styles you can modify these according to your design */
     form {
         max-width: 600px;
         margin: 0 auto;
