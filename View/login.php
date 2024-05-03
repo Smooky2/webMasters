@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h1>Login</h1>
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class "icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
                 </div>
            
