@@ -136,6 +136,70 @@ class reclamationC
         }
     }
 
-
+	function getReclamationStatistics()
+	{
+		$sql = "SELECT statut, COUNT(*) AS count_per_statut FROM reclamation GROUP BY statut";
+		$db = config::getConnexion();
+		try {
+			$liste = $db->query($sql);
+			return $liste;
+		} catch (Exception $e) {
+		}
+	}
+	function afficherfilter($typer)
+	{
+		$sql = "SELECT * FROM reclamation WHERE typer = :typer";
+		$db = config::getConnexion();
+		
+		try {
+			$query = $db->prepare($sql);
+			$query->bindParam(':typer', $typer);
+			$query->execute();
+	
+			$reclamation = $query->fetchall();
+			return $reclamation;
+		} catch (Exception $e) {
+			die('Erreur: ' . $e->getMessage());
+		}
+	}
+	
+	function getUniqueTyperValues() {
+		$pdo = config::getConnexion();
+	
+		try {
+			$query = "SELECT DISTINCT typer FROM reclamation"; // Replace your_table_name with the actual table name
+			$statement = $pdo->query($query);
+	
+			$typerValues = $statement->fetchAll(PDO::FETCH_COLUMN);
+	
+			return $typerValues;
+		} catch (PDOException $e) {
+			// Handle your error appropriately, maybe log it or show an error message
+			// Example: log the error message
+			error_log("Error: " . $e->getMessage());
+			return []; // Return an empty array in case of an error
+		}
+	}
+	
+	public function updateStatut($IDR, $newStatut) {
+		$db = config::getConnexion();
+	
+		try {
+			// Update the statut field with the provided value
+			$sql = "UPDATE reclamation SET statut = :newStatut WHERE IDR = :IDR";
+			$query = $db->prepare($sql);
+			$query->bindParam(':IDR', $IDR, PDO::PARAM_INT);
+			$query->bindParam(':newStatut', $newStatut, PDO::PARAM_STR);
+			$query->execute();
+	
+			// Include $newStatut in the email message
+			//$message = "Reponse Managment, réclamation: $newStatut";
+			//$this->sendEmailNotification("Reponse Managment", $message);
+	
+		} catch (PDOException $e) {
+			echo 'Erreur: ' . $e->getMessage();
+			// Handle the error as needed
+		}
+	}
 
 }

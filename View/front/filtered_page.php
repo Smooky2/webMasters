@@ -2,10 +2,22 @@
 require_once 'C:\xampp\htdocs\projet\Controller\reclamationC.php';
 require_once 'C:\xampp\htdocs\projet\Controller\reponseC.php';
 $reclamationC = new reclamationC();
-$listereclamations = $reclamationC->afficherreclamations();
+$typer = isset($_GET["typer"]) ? $_GET["typer"] : 'all';
+$listereclamations = $reclamationC->afficherfilter($typer);
+
+if ($listereclamations) {
+    // Process $listereclamations as needed
+    foreach ($listereclamations as $reclamation) {
+        // Your logic here
+    }
+} else {
+    echo "No reclamation found."; // Display a message or handle the case when no reclamation is found
+}
 $reponseC = new reponseC();
 
 ?>
+
+
 
 <!doctype html>
 <html class="no-js" lang="en">
@@ -101,14 +113,13 @@ $reponseC = new reponseC();
 		    <div class="clearfix"></div>
 
 		</section><!-- /.top-area-->
-		<!-- top-area End -->
-<a style='  text-decoration: none;
+        <a style='  text-decoration: none;
             color: #fff;
             /* White color */
             background-color: #e74c3c;
             /* Red color */
             padding: 10px 15px;
-            border-radius: 5px;' href="ajoutreclamation.php">Ajouter une reclamation</a>
+            border-radius: 5px;' href="ajouterreclamation.php">Ajouter une reclamation</a>
         <center>
             <h1>Liste des reclamations</h1>
         </center>
@@ -123,8 +134,18 @@ $reponseC = new reponseC();
         }
         ?>
     </select>
+    <a style='  text-decoration: none;
+color: #fff;
+/* White color */
+background-color: green;
+/* Red color */
+padding: 10px 15px;
+border-radius: 5px;' href="afficherreclamation.php">Display All</a>
     <input type="submit" value="Filter">
 </form>
+
+
+
         <table class="my-table" border="1" align="center" id="reclamation-table">
             <tr>
 
@@ -148,34 +169,35 @@ $reponseC = new reponseC();
                     <td><?php echo $reclamation['dess']; ?></td>
                     <td>
 
-
                     <?php
 $statut = $reclamation['statut'];
 if ($statut === "pas encore") {
     echo "Pas encore traité";
-} elseif ($statut === "en cour de traitement") {
-    echo "En cours de traitement";
-} elseif ($statut === "traité") {
+}elseif ($statut === "traité") {
     echo "Traité";
 }
+elseif ($statut === "en train") {
+  echo "traitement en cour";
+}
 ?>
-
-
-
-                    </td>
-                    <td>  <?php if ($response) { ?>
+                    </td>  <td>
+                    <?php if ($statut == "en train") { ?>
+                    <?php if ($response) { ?>
             <a style='  
                 text-decoration: none;
                 color: #fff;
                 background-color: purple;
+                margin-right:5px;
                 padding: 10px 15px;
                 border-radius: 5px;
-            ' href="afficherreponse.php?IDR=<?php echo $reclamation['IDR']; ?>">
+            ' href="afficherListereponses.php?IDR=<?php echo $reclamation['IDR']; ?>">
                 voir reponse
             </a>
-        <?php } else { ?>
+        <?php }} else if ($statut == "pas encore") { ?>
             <span style="color: red;">Il n'y a pas de réponse pour le moment.</span>
-        <?php } ?>
+        <?php } else if ($statut == "traité") {  ?>
+            <span style="color: green;">Réclamation bien traitée.</span>
+            <?php }   ?>
     </td></td>
                     <td>
                         <form method="POST" action="modifierreclamation.php">
@@ -243,6 +265,22 @@ if ($statut === "pas encore") {
             /* Style for the "annuler" link */
          
         </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 </body>
+
 </html>

@@ -2,10 +2,21 @@
 require_once 'C:\xampp\htdocs\projet\Controller\reclamationC.php';
 require_once 'C:\xampp\htdocs\projet\Controller\reponseC.php';
 $reclamationC = new reclamationC();
-$listereclamations = $reclamationC->afficherreclamations();
+$typer = isset($_GET["typer"]) ? $_GET["typer"] : 'all';
+$listereclamations = $reclamationC->afficherfilter($typer);
+
+if ($listereclamations) {
+    // Process $listereclamations as needed
+    foreach ($listereclamations as $reclamation) {
+        // Your logic here
+    }
+} else {
+    echo "No reclamation found."; // Display a message or handle the case when no reclamation is found
+}
 $reponseC = new reponseC();
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -194,17 +205,42 @@ $reponseC = new reponseC();
                 </div>
             </nav>
         <!-- Sidebar End -->
-        
-        <!-- Spinner et barre de navigation latérale -->
-    <a style='  text-decoration: none;
-            right: 100px;
-               position: absolute;
-               color: white;
-               background-color:blue;
-               padding: 10px 15px;
-               border-radius: 5px;
-               z-index: 999;' href="statistics.php">statique</a>
-    <center>
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <center>
     <h1>Liste des reclamations</h1>
   </center>
   <form action="filtered_pageadmin.php" method="GET">
@@ -218,9 +254,18 @@ $reponseC = new reponseC();
         }
         ?>
     </select>
+    <a style='  text-decoration: none;
+color: #fff;
+/* White color */
+background-color: green;
+/* Red color */
+padding: 10px 15px;
+border-radius: 5px;' href="afficherreclamation.php">Display All</a>
     <input type="submit" value="Filter">
 
 </form>
+
+
   <table class="my-table" border="1" align="center" id="reclamation-table">
     <tr>
 
@@ -230,7 +275,7 @@ $reponseC = new reponseC();
       <th>Description</th>
       <th>Etat</th>
       <th>Reponse</th>
-      
+     
 
     </tr>
     <?php foreach ($listereclamations as $reclamation) {
@@ -250,12 +295,18 @@ if ($statut === "pas encore") {
 }elseif ($statut === "traité") {
     echo "Traité";
 }
+elseif ($statut === "en train") {
+  echo "traitement en cour";
+}
 ?>
 
 
   
         </td>
-        <td> <a style='  
+        <td>
+                    <?php if ($statut == "en train") { ?>
+                    <?php if ($response) { ?>
+                      <a style='  
         text-decoration: none;
         color: #fff;
         background-color: purple;
@@ -263,10 +314,25 @@ if ($statut === "pas encore") {
         border-radius: 5px;
     ' href="<?php echo $response ? 'modifierreponseadmin.php?IDR=' . $reclamation['IDR'] : 'ajouterreponseadmin.php?IDR=' . $reclamation['IDR']; ?>">
         <?php echo $response ? 'voir/modifier' : 'repondre'; ?>
-    </a></td>
+    </a>
+        <?php }} else if ($statut == "pas encore") { ?>
+            <span style="color: red;">Il n'y a pas de réponse pour le moment.</span>
+        <?php } else if ($statut == "traité") {  ?>
+            <span style="color: green;">Réclamation bien traitée.</span>
+            <?php }   ?>
+    </td>
+       
         
-      </tr>
+  
+          <?php if ($statut == "en train") { ?>
+            <form method="POST" action="mark_done.php" style="display: inline;">
+            <input type="hidden" name="IDR" value="<?php echo $reclamation['IDR']; ?>">
+            <input type="submit" name="MarkDone" value="traité" style="background-color: #3498db; color: #fff; ">
+        </form>
     <?php } ?>
+        </td>
+      </tr>
+      <?php } ?>
   </table>
 
 
@@ -313,17 +379,7 @@ if ($statut === "pas encore") {
     /* Style for the "annuler" link */
  
   </style>
-
-
-     
-            <!-- Navbar End -->
-
-
-          
-
-            </div>
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
     <!-- JavaScript Libraries -->
@@ -339,6 +395,5 @@ if ($statut === "pas encore") {
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-</body>
-
-</html>
+  </body>
+  </html>
