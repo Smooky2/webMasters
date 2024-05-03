@@ -3,14 +3,19 @@ class Event
 {
     private ?int $idE =null;
     private ?string $nomE =null;
-    private ?DateTime $dateE =null;
-    private ?DateTime $heureE =null;
+    private ?Date $dateE =null;
+    private ?Time $heureE =null;
     private ?string $lieuE =null;
     private ?string $descrpE =null;
     private ?string $categoE =null;
     private ?string $fraisE =null;
+    private ?string $img =null ;
 
-    public function __construct($idE , $b, $c,$h, $d, $e ,$f ,$g)
+
+
+
+
+    public function __construct($idE , $b, $c,$h, $d, $e ,$f ,$g,$i)
     {
         $this->idE = $idE;
         $this->nomE = $b;
@@ -19,7 +24,9 @@ class Event
         $this->lieuE = $d;
         $this->descrpE = $e;
         $this->categoE = $f;
-        $this->fraisE = $g;
+        $this->fraisE = $g;  
+        $this->img = $i;
+
 
     }
  
@@ -31,6 +38,8 @@ class Event
     public function getdescrpE(){return $this->descrpE;}
     public function getgategoE(){ return $this->categoE;}
     public function getfraisE(){return $this->fraisE;}
+    public function getimg(){return $this->img;}
+
 
     public function setidE(int $val){$this->idE=$val;}
     public function setnomE(string $val){$this->nomE=$val;}
@@ -40,6 +49,7 @@ class Event
     public function setdescrepE(string $val){$this->descrepE=$val;}
     public function setgategoE(string $val){$this->categoE=$val;}
     public function setfraisE(string $val){$this->fraisE=$val;}
+    public function setimg(string $val){$this->img=$val;}
 
 }
 ?>

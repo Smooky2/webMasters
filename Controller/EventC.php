@@ -32,8 +32,8 @@ class EventC
 
     public function addEvent($event)
     {
-        $sql = "INSERT INTO events (idE, nomE, dateE,heureE, lieuE, descpE, categoE, fraisE)  
-        VALUES (:idE, :nomE, :dateE,:heureE, :lieuE, :descpE, :categoE, :fraisE,NULL)";
+        $sql = "INSERT INTO events (idE, nomE, dateE,heureE, lieuE, descrpE, categoE, fraisE,img)  
+        VALUES (:idE, :nomE, :dateE,:heureE, :lieuE, :descrpE, :categoE, :fraisE,img)";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -43,9 +43,10 @@ class EventC
                 'dateE' => $event->getDateE()->format('Y-m-d'),
                 'heureE' => $event->getheureE()->format('H:i:s'),
                 'lieuE' => $event->getLieuE(),
-                'descpE' => $event->getDescpE(),
+                'descrpE' => $event->getdescrpE(),
                 'categoE' => $event->getCategoE(),
-                'fraisE' => $event->getFraisE()
+                'fraisE' => $event->getFraisE(),
+                'img' => $event->getimg()
             ]);
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
@@ -64,7 +65,8 @@ class EventC
                 lieuE = :lieuE, 
                 descrpE = :descrpE, 
                 categoE = :categoE, 
-                fraisE = :fraisE
+                fraisE = :fraisE,
+                img = :img
                 WHERE idE = :idE'
             );
             $query->execute([
@@ -73,9 +75,11 @@ class EventC
                 'dateE' => $event->getDateE()->format('Y-m-d'),
                 'heureE' => $event->getheureeE()->format('H:i:s'),
                 'lieuE' => $event->getLieuE(),
-                'descrpE' => $event->getDescpE(),
+                'descrpE' => $event->getdescrpE(),
                 'categoE' => $event->getCategoE(),
-                'fraisE' => $event->getFraisE()
+                'fraisE' => $event->getFraisE(),
+                'img' => $event->getimg()
+
             ]);
             echo $query->rowCount() . " records UPDATED successfully <br>";
         } catch (PDOException $e) {

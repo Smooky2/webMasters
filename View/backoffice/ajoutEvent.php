@@ -1,55 +1,80 @@
 <?php
 
-include '..\aide\EventC.php';
-$error= "";
-// create event
-$event = null;
+include '..\aide\config.php';
+include '..\aide\Event.php';
 
-// create an instance of the controller
-//echo $_POST["idE"];
-$eventC = new EventC();
-if (
-    isset($_POST["idE"]) &&
-    isset($_POST["nomE"]) &&
-    isset($_POST["dateE"]) &&
-    isset($_POST["heureE"]) &&
-    isset($_POST["lieuE"]) &&
-    isset($_POST["descrpE"]) &&
-    isset($_POST["categoE"]) &&
-    isset($_POST["fraisE"])
-) {
-    echo "This is a message to log.";
-    if (
-        !empty($_POST['idE']) &&
-        !empty($_POST['nomE']) &&
-        !empty($_POST["dateE"]) &&
-        !empty($_POST["heureE"]) &&
-        !empty($_POST["lieuE"]) &&
-        !empty($_POST["descrpE"]) &&
-        !empty($_POST["categoE"]) &&
-        !empty($_POST["fraisE"])
-    ) {
-        echo "This is a message to log.";
-        $dateTime = new DateTime($_POST['dateE'] . ' ' . $_POST['heureE']);
+// Check if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Create new Event object
+    $event = new Event(
+        $_POST['idE'],
+        $_POST['nomE'],
+        new DateTime($_POST['dateE']),
+        new DateTime($_POST['heureE']),
+        $_POST['lieuE'],
+        $_POST['descrpE'],
+        $_POST['categoE'],
+        $_POST['fraisE'],
+        null // Image path will be set later
+    )
+    ;
 
-        $event = new Event(
-            $_POST['idE'],
-            $_POST['nomE'],
-            $dateTime,
-            $dateTime,
-            $_POST['lieuE'],
-            $_POST['descrpE'],
-            $_POST['categoE'],
-            $_POST['fraisE']
-        );
-        $eventC->addEvent($event);
-        //header('Location: listEvent.php');
+    // Handle image upload
+    $targetDir = "uploads/"; // Directory to save images
+    $targetFile = $targetDir . basename($_FILES["image"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($targetFile,PATHINFO_EXTENSION));
+
+    // Check if image file is a actual image or fake image
+    $check = getimagesize($_FILES["image"]["tmp_name"]);
+    if($check !== false) {
+        echo "File is an image - " . $check["mime"] . ".";
+        $uploadOk = 1;
     } else {
-        $error = "Missing information";
+        echo "File is not an image.";
+        $uploadOk = 0;
+    }
+
+    // Check if file already exists
+    if (file_exists($targetFile)) {
+        echo "Sorry, file already exists.";
+        $uploadOk = 0;
+    }
+
+    // Check file size
+    if ($_FILES["image"]["size"] > 500000) {
+        echo "Sorry, your file is too large.";
+        $uploadOk = 0;
+    }
+
+    // Allow certain file formats
+    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+    && $imageFileType != "gif" ) {
+        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        $uploadOk = 0;
+    }
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+    // if everything is ok, try to upload file
+    } else {
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+            echo "The file ". htmlspecialchars( basename( $_FILES["image"]["name"])). " has been uploaded.";
+            // Set image path for the event
+            $event->setImg($targetFile);
+
+            // Now add the event to the database
+            $eventController = new EventC();
+            $eventController->addEvent($event);
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
     }
 }
 
 ?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -226,8 +251,7 @@ if (
     <!-- Navbar End -->
 
     <!-- Registration Form -->
-    <form action="" method="POST" class="mx-auto mt-5 p-4 border rounded bg-light" style="max-width: 400px;">
-    <h3 class="text-center mb-4">EVENNEMENT</h3>
+    <form action="" method="POST" class="mx-auto mt-5 p-4 border rounded bg-light" style="max-width: 400px;" enctype="multipart/form-data">    <h3 class="text-center mb-4">EVENNEMENT</h3>
     <!-- Form Fields -->
     <div class="mb-3">
         <label for="idE" class="form-label">Id:</label>
@@ -268,10 +292,15 @@ if (
         <label for="fraisE" class="form-label">Frais:</label>
         <input type="text"   name="fraisE" id="fraisE" class="form-control">
     </div>
+    <div class="mb-3">
+    <label for="img" class="form-label">Image:</label>
+    <input type="file" id="img" name="img" class="form-control" >
+    </div>
+
     <!-- Submit Button -->
     <input type="submit" value="Save">
      <!--<button type="submit" class="btn btn-primary w-100">S'inscrire</button>-->
-    <script src="sriptEvent.js"></script>
+     <script src="scriptEvent.js"></script>
 </form>
 
 

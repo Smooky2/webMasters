@@ -47,13 +47,13 @@ function validerLieu() {
     return true;
 }
 
-function validerDescp() {
-    const descp = document.getElementById('descp').value.trim();
-    const errorDescp = document.getElementById('errorDescp');
+function validerDescrp() {
+    const descrpE = document.getElementById('descrpE').value.trim();
+    const errordescrpE = document.getElementById('errordescrpE');
 
     // Add your descp validation logic here
 
-    errorDescp.textContent = '';
+    errordescrpE.textContent = '';
     return true;
 }
 

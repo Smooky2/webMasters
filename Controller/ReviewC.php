@@ -22,8 +22,10 @@ class ReviewC
     {
         try {
             $pdo = config::getConnexion();
-            $query = $pdo->prepare("SELECT * FROM events e, reviews r WHERE e.nomE LIKE :nom and r.idev = e.idE");
-            $query->execute(['nom' => "%$text%"]);
+            //$query = $pdo->prepare("SELECT * FROM events e, reviews r WHERE e.nomE LIKE :nom and r.idev = e.idE");
+            $query = $pdo->prepare("SELECT * FROM events e, reviews r WHERE e.idE = :id and r.idev = e.idE");
+            //$query->execute(['nom' => "%$text%"]);
+            $query->execute(['id' => $id]);
             return $query->fetchAll();
         } catch (PDOException $e) {
             echo $e->getMessage();
@@ -45,6 +47,45 @@ class ReviewC
             echo 'Error: ' . $e->getMessage();
         }
     }
+    public function deleterate($idRev)
+{
+    $sql = "DELETE FROM reviews WHERE idRev = :idRev";
+    $db = config::getConnexion();
+    $req = $db->prepare($sql);
+    $req->bindValue(':idRev', $idRev);
+
+    try {
+        $req->execute();
+    } catch (Exception $e) {
+        die('Error:' . $e->getMessage());
+    }
 }
+public function listrate()
+    {
+        $sql = "SELECT * FROM reviews ";
+        $db = config::getConnexion();
+        try {
+            $liste = $db->query($sql);
+            return $liste;
+        } catch (Exception $e) {
+            die('Error:' . $e->getMessage());
+        }
+    }
+    public function listrates($idE)
+{
+    $sql = "SELECT * FROM reviews WHERE idev = :idE";
+    $db = config::getConnexion();
+    try {
+        $query = $db->prepare($sql);
+        $query->bindParam(':idE', $idE, PDO::PARAM_INT);
+        $query->execute();
+        $liste = $query->fetchAll();
+        return $liste;
+    } catch (Exception $e) {
+        die('Error:' . $e->getMessage());
+    }
+}
+}
+
 
 ?>

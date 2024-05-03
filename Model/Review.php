@@ -13,7 +13,6 @@ class Review
     {
         $this->idRev = $idRev;
         $this->stars = $b;
-       
         $this->dateRev = $h;
         $this->id_user = $id_user;
         $this->idev = $idev;

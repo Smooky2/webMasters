@@ -4,7 +4,7 @@ class Review
     private ?int $idRev =null;
     private ?string $stars =null;
     private ?DateTime $dateRev =null;
-    private ?int $id_user=null;
+    private ?int $id_user=1;
     private ?int $idev=null;
 
 

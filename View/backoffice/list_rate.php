@@ -1,9 +1,26 @@
 <?php
-include '..\aide\EventC.php';
+include '..\aide\ReviewC.php';
+$revC = new ReviewC();
+
+// Check if idRev is set in the URL
+echo $_GET["id"];
+if(isset($_GET["id"])) {
+    $id = $_GET["id"];
+    $list = $revC->listrates($id);
+} else {
+    // Handle the case where idRev is not set
+    $list = array(); // Set an empty array
+}
 
 
-$eventC = new EventC();
-$list = $eventC->listEvent();
+/*if(isset($_GET["idRev"])) {
+
+    $id = $_GET["idRev"];
+    $list = $revC->AfficherReview($id);
+}*/
+
+/*$revC = new ReviewC();
+$list = $revC->listrate();*/
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
@@ -142,44 +159,25 @@ $list = $eventC->listEvent();
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nom</th>
+                            <th>nombre de stars</th>
                             <th>Date</th>
-                            <th>Time</th>
-                            <th>Lieu</th>
-                            <th>Description</th>
-                            <th>Catégorie</th>
-                            <th>Frais</th>
-                            <th>Update</th>
-                            <th>Delete</th>
-                            <th>Evaluation</th>
+                            <th>Id Event</th>
                         </tr>
                     </thead>
                     <tbody>
                    
-                        <?php foreach ($list as $event)  
+                        <?php foreach ($list as $rev)  
                         {
                             ?>
                             <tr>
-                                <td><?= $event['idE']; ?></td>
-                                <td><?= $event['nomE']; ?></td>
-                                <td><?= $event['dateE']; ?></td>
-                                <td><?= $event['heureE']; ?></td>
-                                <td><?= $event['lieuE']; ?></td>
-                                <td><?= $event['descrpE']; ?></td>
-                                <td><?= $event['categoE']; ?></td>
-                                <td><?= $event['fraisE']; ?></td>
-                                <td>
-                                    <form method="POST" action="../backoffice/updateEvent.php">
-                                        <button type="submit" class="btn btn-primary btn-sm" name="update">Update</button>
-                                        <input type="hidden" value="<?= $event['idE']; ?>" name="id">
-                                    </form>
-                                </td>
-                                <td>
-                                    <a href="../deleteEvent.php?id=<?= $event['idE']; ?>" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
+                                <td><?= $rev['idRev']; ?></td>
+                                <td><?= $rev['stars']; ?></td>
+                                <td><?= $rev['dateRev']; ?></td>
+                                <td><?= $rev['idev']; ?></td>
                                
-                                <td><a href="../backoffice/list_rate.php?id=<?= $event['idE']; ?>" class="btn btn-danger btn-sm">review</a>
-
+                                <td>
+                                <a href="../delete_rate.php?id=<?= $rev['idRev']; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
                                 
                             </tr>
                         <?php 
@@ -190,12 +188,7 @@ $list = $eventC->listEvent();
                 </table>
                 </div>
                <!-- Centered Search Form -->
-<div class="text-center">
-    <form method="POST" action="../backoffice/searchReview.php">
-        <button type="submit" class="btn btn-primary btn-sm" name="search">Search Reviews</button>
-        <input type="hidden" value="<?= $rev['idRev']; ?>" name="id">
-    </form>
-</div>
+
             </div>
         </div>
     <!-- Back to Top Button -->

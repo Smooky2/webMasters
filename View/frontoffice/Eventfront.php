@@ -54,9 +54,19 @@ $list = $eventC->listEvent();
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 
     <!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        /* Style for blue and slightly larger text */
+        .single-event h3,
+        .single-event p {
+            color: #ffffff; /* Blue color */
+            font-size: 15px; /* Larger font size */
+            font-weight: 500; /* Medium font weight */
+        }
+    </style>
 
 </head>
 
@@ -131,16 +141,24 @@ $list = $eventC->listEvent();
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
-                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="Eventfront.php">Event</a></li>
-                            <li class="scroll"><a href="#explore">explore</a></li>
-                            <li class="scroll"><a href="#reviews">review</a></li>
-                            <li class="scroll"><a href="#blog">blog</a></li>
-                            <li class="scroll"><a href="#contact">contact</a></li>
-                        </ul><!--/.nav -->
-                    </div><!-- /.navbar-collapse -->
-                </div><!--/.container-->
+    <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+        <li><a href="index.html">Home</a></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Event <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="Eventfront.php">List Event</a></li>
+                <li><a href="searchReview.php">Event's Rate</a></li>
+                <li><a href="EventSort.php">sort</a></li>
+            </ul>
+        </li>
+        <li class="scroll"><a href="#explore">explore</a></li>
+        <li class="scroll"><a href="#reviews">review</a></li>
+        <li class="scroll"><a href="#blog">blog</a></li>
+        <li class="scroll"><a href="#contact">contact</a></li>
+    </ul><!--/.nav -->
+</div><!-- /.navbar-collapse -->
+</div><!--/.container-->
+
             </nav><!--/nav-->
             <!-- End Navigation -->
         </div><!--/.header-area-->
@@ -152,53 +170,34 @@ $list = $eventC->listEvent();
     <!--welcome-hero start -->
     <section id="home" class="welcome-hero">
         <div class="container">
-            <!-- Table (Sample Data) -->
-            <br>
-            <br>
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nom</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Lieu</th>
-                            <th>Description</th>
-                            <th>Catégorie</th>
-                            <th>Frais</th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                   
-                        <?php foreach ($list as $event)  
-                        {
-                            ?>
-                            <tr>
-                                <td><?= $event['idE']; ?></td>
-                                <td><?= $event['nomE']; ?></td>
-                                <td><?= $event['dateE']; ?></td>
-                                <td><?= $event['heureE']; ?></td>
-                                <td><?= $event['lieuE']; ?></td>
-                                <td><?= $event['descrpE']; ?></td>
-                                <td><?= $event['categoE']; ?></td>
-                                <td><?= $event['fraisE']; ?></td>
-                                <td><a href="add_rate.php?id=<?= $event['idE']; ?>" class="btn btn-danger btn-sm">review</a>
-                                    
-                                </td>
+            <section id="events" class="events">
+                <div class="container">
+                    <div class="row">
+                        <?php foreach ($list as $event) { ?>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="single-event">
+                                <div class="event-img">
+                                    <img src="uploads/<?php echo $event['img']; ?>" >
+                                </div>
 
-                            </tr>
-                        <?php 
-                        }
-                        
-                        ?>
-                    </tbody>
-                </table>
+                                <div class="event-content">
+                                    <h3><?php echo $event['nomE']; ?></h3>
+                                    <p><strong>Date:</strong> <?php echo $event['dateE']; ?></p>
+                                    <p><strong>Time:</strong> <?php echo $event['heureE']; ?></p>
+                                    <p><strong>Location:</strong> <?php echo $event['lieuE']; ?></p>
+                                    <p><strong>Category:</strong> <?php echo $event['categoE']; ?></p>
+                                    <p><strong>Frais:</strong> <?php echo $event['fraisE']; ?></p>
+                                    <a href="add_rate.php?id=<?php echo $event['idE']; ?>" class="btn btn-primary">Review</a>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </section>
 
-            </div>
-        </div>
 
+        </div><!--/.container-->
     </section><!--/.welcome-hero-->
     <!--welcome-hero end -->
 
