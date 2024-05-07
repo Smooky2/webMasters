@@ -304,7 +304,32 @@ if (isset($_SESSION['id'])) {
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+<script>
+  function verif() {
+    var nom = document.getElementById("nom").value;
+    var prenom = document.getElementById("prenom").value;
+    var email = document.getElementById("emails").value;
+    var phone = document.getElementById("phone").value;
+    var adresse = document.getElementById("adresse").value;
+    var dater = document.getElementById("dater").value;
+    var pass = document.getElementById("pass").value;
+    var rpass = document.getElementById("rpass").value;
 
+    // Vérifier si tous les champs sont remplis
+    if (nom == "" || prenom == "" || email == "" || phone == "" || adresse == "" || dater == "" || pass == "" || rpass == "") {
+        alert("Tous les champs doivent être remplis");
+        return false;
+    }
+
+    // Vérifier si les mots de passe correspondent
+    if (pass != rpass) {
+        alert("Les mots de passe ne correspondent pas");
+        return false;
+    }
+
+    return true;
+}
+  </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -312,6 +337,7 @@ if (isset($_SESSION['id'])) {
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- <script src="register.js"></script> -->
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>

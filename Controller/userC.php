@@ -12,6 +12,59 @@ public function afficheruser() {
     $stmt = $db->query($query);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+public function updatePasswordByEmail($email, $newPassword)
+    {
+        $db = config::getConnexion();
+
+        try {
+            $query = "UPDATE user SET pass = :newPassword, rpass = :newPassword WHERE emails = :email";
+            $stmt = $db->prepare($query);
+
+            // Bind parameters
+            $stmt->bindValue(':newPassword', $newPassword);
+            $stmt->bindValue(':email', $email);
+
+            // Execute the query
+            $result = $stmt->execute();
+
+            if ($result) {
+                // Password updated successfully
+                return true;
+            } else {
+                // Password update failed
+                return false;
+            }
+        } catch (PDOException $e) {
+            // Handle PDO exception (database error)
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+
+public function isEmailExistsInDatabase($email)
+{
+    $pdo = config::getConnexion();
+    if ($pdo) {
+        try {
+            // Prepare the SQL statement
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM user WHERE emails = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            // Fetch the result
+            $count = $stmt->fetchColumn();
+
+            // If count > 0, the email exists in the database
+            return $count > 0;
+        } catch (PDOException $e) {
+            // Handle query errors
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    return false;
+}
 
 
 
@@ -167,6 +220,8 @@ public function updateUser(User $user) {
             // Execute the query
             return $stmt->execute();
         }
+  
+
     }
     
 ?>

@@ -397,7 +397,7 @@
 </style>
 
 <div class="table-container">
-    <table class="custom-table">
+    <table class="table">
  <h1>Users table</h1>
 
         <thead>
@@ -430,21 +430,8 @@
                     <td><?php echo $row['gender']; ?></td>
                     <td>
                     <?php 
-                      include '../Controller/roleC.php';
-                      $roleC = new roleC();
-                      $roles = $roleC->afficherrole();
+                   
                 
-                // Assuming $roles is an array containing role information
-                $roleId = $row['idrole'];
-                $roletitre = '';
-                // Find the role titre based on the role ID
-                foreach ($roles as $role) {
-                    if ($role['idrole'] == $roleId) {
-                        $roletitre = $role['titre'];
-                        break;
-                    }
-                }
-                echo $roletitre;
             ?>
         </td>
   
