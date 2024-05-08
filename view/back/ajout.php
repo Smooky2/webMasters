@@ -10,13 +10,13 @@ $forumC = new forumC();
 
 if (
     isset($_POST["title"]) &&
-    isset($_POST["content"]) &&
-    isset($_POST["id_user"]) 
+    isset($_POST["content"])
+    
 ) {
     if (
         !empty($_POST['title']) &&
-        !empty($_POST["content"]) &&
-        !empty($_POST["id_user"]) 
+        !empty($_POST["content"]) 
+       
     ) {
         $currentDate = date('Y-m-d H:i:s');
         $forum = new forum(
@@ -24,7 +24,7 @@ if (
             $_POST['title'],
             $_POST['content'],
             $currentDate ,//date systeme
-            $_POST['id_user'],
+            
              
         );
         $forumC->addForum($forum);
@@ -171,7 +171,7 @@ $forumC = new forumC();
             <input type="text" id="title" name="title">
             <label for="content">Content:</label>
             <textarea id="content" name="content" rows="10"></textarea>
-            <input type="number" class="email_bt_2" id="id_user" name="id_user" placeholder="Enter your user ID..." required>
+            
             <input type="submit" value="Publish">
         </form>
         </div>

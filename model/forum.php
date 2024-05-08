@@ -6,7 +6,7 @@ class forum
     private string $titre ;
     private string $description  ;
     private string $date_creation ;
-    private int $createur_forum_id;
+    
 
     public function getid_forum()
     {
@@ -40,22 +40,15 @@ class forum
     {
         $this->date_creation=$a;
     }
-    public function getcreateur_forum_id()
-    {
-        return $this->createur_forum_id;
-    }
-    public function setcreateur_forum_id($a)
-    {
-        $this->createur_forum_id=$a;
-    }
     
-    public function __construct( $id_forum=null, $titre, $description, $date_creation,$createur_forum_id )
+    
+    public function __construct( $id_forum=null, $titre, $description, $date_creation)
     {
         $this->id_forum=$id_forum;
         $this->titre=$titre;
         $this->description=$description;
         $this->date_creation = $date_creation;
-        $this->createur_forum_id=$createur_forum_id;
+        
         
     }
        

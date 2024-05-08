@@ -12,10 +12,10 @@ if(isset($_POST['submit'])) {
     $title = isset($_POST['title']) ? $_POST['title'] : '';
     $content = isset($_POST['content']) ? $_POST['content'] : '';
 	$currentDate = date('Y-m-d H:i:s');
-	$id_user = isset($_POST['id_user']) ? $_POST['id_user'] : '';
 
 
-$forum = new forum($id_forum,$title,$content,$currentDate,$id_user); 
+
+$forum = new forum($id_forum,$title,$content,$currentDate); 
 $forumC->modifyforum($forum);
 echo '<script>alert("Modification  réussie");</script>';
 header('Location:modifier_forum.php');
@@ -159,7 +159,7 @@ exit();
             <input type="text" id="title" name="title">
             <label for="content">Content:</label>
             <textarea id="content" name="content" rows="10"></textarea>
-            <input type="number" class="email_bt_2" id="id_user" name="id_user" placeholder="Enter your user ID..." required>
+            
             <input type="submit" value="Publish"name="submit">
         </form>
         </div>

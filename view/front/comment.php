@@ -4,12 +4,22 @@ include 'C:\xampp\htdocs\projet\controller\messageC.php'; // Include the comment
 $c_forum = new forumC(); // Create an instance of the forum controller
 $c_comment = new messageC(); // Create an instance of the comment controller
 
+
+/*switch ($action) {
+    case 'increaseLike':
+        $comment_id = $_POST['id_comment'];
+        $messageC = new messageC();
+        $result = $messageC->increaseLike($comment_id);
+        echo $result ? 'success' : 'error';
+    }*/
 // Check if forum id is provided in the URL
 if(isset($_GET['id_forum'])) {
+    
     $forum_id = $_GET['id_forum'];
     //echo "Forum ID: " . $forum_id;
     $forum = $c_forum->getForumById($forum_id); // Get forum details by id
     $comments = $c_comment->getCommentsByForumId($forum_id); // Get comments associated with this forum
+    
 } else {
     // Handle error if no forum id is provided
     echo "Forum ID not provided!";
@@ -155,6 +165,11 @@ table tr:nth-child(even) {
                             <tr>
                                 <td><?php echo $comment['id_user']; ?></td>
                                 <td><?php echo $comment['contenu']; ?></td>
+                                
+                                <td><button type="button" class="like-button" data-comment-id="<?= htmlspecialchars($comment['id_message']) ?>">Like</button>
+<span class="like-count" id="like-count-<?= htmlspecialchars($comment['id_message']) ?>"><?= htmlspecialchars($comment['like']) ?></span></td>
+<td><button type="button" class="dislike-button" data-comment-id="<?= htmlspecialchars($comment['id_message']) ?>">disLike</button>
+<span class="dislike-count" id="dislike-count-<?= htmlspecialchars($comment['id_message']) ?>"><?= htmlspecialchars($comment['dislike']) ?></span></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -175,6 +190,7 @@ table tr:nth-child(even) {
             </div>
         </div>
     </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 function validateForm() {
     var comment = document.getElementById('comment').value;
@@ -184,7 +200,54 @@ function validateForm() {
     }
     return true;
 }
+// Add this code before the closing </body> tag
+$(document).ready(function() {
+    $('.like-button').click(function() {
+        const commentId = $(this).data('comment-id');
+        increaseLike(commentId);
+    });
+});
+$(document).ready(function() {
+    $('.dislike-button').click(function() {
+        const commentId = $(this).data('comment-id');
+        increasedisLike(commentId);
+    });
+});
+
+function increaseLike(commentId) {
+    // Send an AJAX request to the server to increase the like count
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `increaseLike.php?id_message=${commentId}`, true);
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            const likeCountSpan = document.getElementById(`like-count-${commentId}`);
+            if (likeCountSpan) {
+                likeCountSpan.textContent = xhr.responseText;
+            }
+        }
+    };
+    xhr.send();
+}
+function increasedisLike(commentId) {
+    // Send an AJAX request to the server to increase the like count
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `increasedisLike.php?id_message=${commentId}`, true);
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            const likeCountSpan = document.getElementById(`dislike-count-${commentId}`);
+            if (likeCountSpan) {
+                likeCountSpan.textContent = xhr.responseText;
+            }
+        }
+    };
+    xhr.send();
+}
+
 </script>
+<!-- Add jQuery library if not already included -->
+
+
+<!-- Add JavaScript code for like and dislike functionality -->
 
     <!-- Add your footer content here -->
     <!-- Button to View My Comments -->

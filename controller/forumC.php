@@ -21,7 +21,7 @@ class forumc{
     }
 public function addForum($forum)
 {
-    $sql = "INSERT INTO forum (id_forum, titre, description, date_creation,createur_forum_id) VALUES (:id_forum,:titre,:description,:date_creation,:createur_forum_id)";
+    $sql = "INSERT INTO forum (id_forum, titre, description, date_creation) VALUES (:id_forum,:titre,:description,:date_creation)";
     $db = Config::getConnexion();
     try {
         $query = $db->prepare($sql);
@@ -29,8 +29,8 @@ public function addForum($forum)
             'id_forum'=>$forum->getid_forum(),
             'titre' => $forum->gettitre(),
             'description' => $forum->getdescription(),
-            'date_creation' => $forum->getdate_creation(),
-            'createur_forum_id' =>$forum->getcreateur_forum_id()
+            'date_creation' => $forum->getdate_creation()
+            
         ]);
     } catch (Exception $e) {
         echo 'Error: ' . $e->getMessage();

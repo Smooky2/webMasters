@@ -235,7 +235,7 @@ table tr:nth-child(even) {
       <th >Titre</th>
       <th >Description</th>
       <th >Date de création</th>
-      <th >id_user</th>
+     
       <th ></th>
     </tr>
   </thead>
@@ -246,7 +246,7 @@ table tr:nth-child(even) {
         <td ><?php echo $forum['titre'];?></td>
         <td ><?php echo $forum['description'];?></td>
         <td ><?php echo $forum['date_creation'];?></td>
-        <td ><?php echo $forum['createur_forum_id'];?></td>
+        
         <td>
            <button type="button" class="#"><a href="supp_forum.php?id_forum=<?php echo $forum['id_forum']; ?>">Delete</a></button>
         </td>

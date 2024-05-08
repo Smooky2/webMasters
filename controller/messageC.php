@@ -164,7 +164,69 @@ public function modifier_comment($id_message,$content,$currentDate)
         $stmt->execute();
     } 
 
+    /*public function increaseLike($comment_id)
+    {
+        $sql = "UPDATE message SET 'like' = 'like' + 1 WHERE id_message = :id_message";
+        $db = Config::getConnexion();
 
+        try {
+            $query = $db->prepare($sql);
+            $query->bindValue(':id_message', $comment_id);
+            $query->execute();
+            return true;
+        } catch (PDOException $e) {
+            // Add an error message for debugging
+            echo 'Error: ' . $e->getMessage();
+            return false; // Return false to indicate failure
+        }
+    }*/
+    public function increaseLike($comment_id)
+{
+    $sql = "UPDATE message SET `like` = `like` + 1 WHERE id_message = :id_message";
+    $db = Config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->bindValue(':id_message', $comment_id);
+        $query->execute();
+
+        // Get the updated like count
+        $sql = "SELECT `like` FROM message WHERE id_message = :id_message";
+        $query = $db->prepare($sql);
+        $query->bindValue(':id_message', $comment_id);
+        $query->execute();
+        $likeCount = $query->fetchColumn();
+
+        return $likeCount;
+    } catch (PDOException $e) {
+        echo 'Error: ' . $e->getMessage();
+        return false;
+    }
+}
+public function increasedisLike($comment_id)
+{
+    $sql = "UPDATE message SET `dislike` = `dislike` + 1 WHERE id_message = :id_message";
+    $db = Config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->bindValue(':id_message', $comment_id);
+        $query->execute();
+
+        // Get the updated like count
+        $sql = "SELECT `dislike` FROM message WHERE id_message = :id_message";
+        $query = $db->prepare($sql);
+        $query->bindValue(':id_message', $comment_id);
+        $query->execute();
+        $dislikeCount = $query->fetchColumn();
+
+        return $dislikeCount;
+    } catch (PDOException $e) {
+        echo 'Error: ' . $e->getMessage();
+        return false;
+    }
+}
+    
 
 }
 

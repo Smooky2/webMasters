@@ -244,6 +244,7 @@ table tr:nth-child(even) {
                                             <th scope="col">Date</th>
                                             <th scope="col">Text</th>
                                             <th scope="col">Delete</th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
