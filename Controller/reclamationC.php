@@ -5,6 +5,7 @@ require_once 'C:\xampp\htdocs\projet\Config.php';
 require_once 'C:\xampp\htdocs\projet\Model\reclamation.php';
 
 
+require_once 'C:\xampp\htdocs\projet\vendor\autoload.php';
 
 
 
@@ -180,7 +181,30 @@ class reclamationC
 			return []; // Return an empty array in case of an error
 		}
 	}
-	
+	private function sendEmailNotification($subject, $data)
+    {
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'mouhamedaziz481@gmail.com';
+            $mail->Password = 'nnkp ghno cpcw vacl';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+
+            $mail->setFrom('admin@php.com', 'Systeme de notification');
+            $mail->addAddress('mouhamedaziz481@gmail.com');
+
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $data;
+
+            $mail->send();
+        } catch (Exception $e) {
+            echo "Le message n'a pas pu être envoyé. Erreur du messager : {$mail->ErrorInfo}";
+        }
+    }
 	public function updateStatut($IDR, $newStatut) {
 		$db = config::getConnexion();
 	
@@ -193,13 +217,14 @@ class reclamationC
 			$query->execute();
 	
 			// Include $newStatut in the email message
-			//$message = "Reponse Managment, réclamation: $newStatut";
-			//$this->sendEmailNotification("Reponse Managment", $message);
+			$message = "Reponse Managment, réclamation: $newStatut";
+			$this->sendEmailNotification("Reponse Managment", $message);
 	
 		} catch (PDOException $e) {
 			echo 'Erreur: ' . $e->getMessage();
 			// Handle the error as needed
 		}
 	}
+	
 
 }

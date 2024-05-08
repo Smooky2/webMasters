@@ -263,7 +263,22 @@ if ($statut === "pas encore") {
         border-radius: 5px;
     ' href="<?php echo $response ? 'modifierreponseadmin.php?IDR=' . $reclamation['IDR'] : 'ajouterreponseadmin.php?IDR=' . $reclamation['IDR']; ?>">
         <?php echo $response ? 'voir/modifier' : 'repondre'; ?>
-    </a></td>
+    </a>
+    <?php if ($statut == "en train") { ?>
+            <form method="POST" action="mark_done.php" style="display: inline;">
+            <input type="hidden" name="IDR" value="<?php echo $reclamation['IDR']; ?>">
+            <input type="submit" name="MarkDone" value="traité" style="background-color: #3498db; color: #fff; ">
+        </form>
+    <?php } else { ?>
+        <!-- Form for marking as Pas encore -->
+        <form method="POST" action="mark_done.php" style="display: inline;">
+            <input type="hidden" name="IDR" value="<?php echo $reclamation['IDR']; ?>">
+            <input type="submit" name="MarkDone" value="traitement en cour" style="background-color: #f39c12; color: #fff;">
+        </form>
+          <?php } ?>
+
+
+</td>
         
       </tr>
     <?php } ?>
