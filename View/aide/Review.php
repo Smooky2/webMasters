@@ -9,7 +9,7 @@ class Review
 
 
 
-    public function __construct($b,$idev, $idRev=null,$h=null, $id_user=null)
+    public function __construct($b,$idev, $idRev=null,$h=null, $id_user=null,$i)
     {
         $this->idRev = $idRev;
         $this->stars = $b;
@@ -17,6 +17,8 @@ class Review
         $this->dateRev = new DateTime();
         $this->id_user = $id_user;
         $this->idev = $idev;
+        $this->img = $i;
+
 
     }
  

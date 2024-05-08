@@ -63,6 +63,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: #007bff;
             font-weight: bold;
         }
+
+        /* Style for back button */
+        .back-btn {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-btn a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .back-btn a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -85,6 +100,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
         </div>
+        
+
+
+
+         
+
 
         <?php if (isset($percentage)) { ?>
         <div class="row justify-content-center">
@@ -97,9 +118,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
         </div>
+       
         <?php } ?>
 
-</div>
+    </div>
+     <!-- Button to return to Eventfront.php -->
+     <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="back-btn">
+                    <a href="Eventfront.php" class="btn btn-primary">Back to Eventfront</a>
+                </div>
+            </div>
+        </div>
 
 
 </body>

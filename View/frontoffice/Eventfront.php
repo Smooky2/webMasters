@@ -149,6 +149,10 @@ $list = $eventC->listEvent();
                 <li><a href="Eventfront.php">List Event</a></li>
                 <li><a href="searchReview.php">Event's Rate</a></li>
                 <li><a href="EventSort.php">sort</a></li>
+                <li><a href="Eventcalender.php">calender</a></li>
+                <li><a href="statistiqueE.php">statistique</a></li>
+                <li><a href="updateR.php">update a Review</a></li>
+
             </ul>
         </li>
         <li class="scroll"><a href="#explore">explore</a></li>
@@ -176,9 +180,7 @@ $list = $eventC->listEvent();
                         <?php foreach ($list as $event) { ?>
                         <div class="col-lg-4 col-md-6">
                             <div class="single-event">
-                                <div class="event-img">
-                                    <img src="uploads/<?php echo $event['img']; ?>" >
-                                </div>
+                               
 
                                 <div class="event-content">
                                     <h3><?php echo $event['nomE']; ?></h3>

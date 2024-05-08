@@ -32,8 +32,8 @@ class EventC
 
     public function addEvent($event)
     {
-        $sql = "INSERT INTO events (idE, nomE, dateE,heureE, lieuE, descrpE, categoE, fraisE,img)  
-        VALUES (:idE, :nomE, :dateE,:heureE, :lieuE, :descrpE, :categoE, :fraisE,img)";
+        $sql = "INSERT INTO events (idE, nomE, dateE,heureE, lieuE, descrpE, categoE, fraisE)  
+        VALUES (:idE, :nomE, :dateE,:heureE, :lieuE, :descrpE, :categoE, :fraisE)";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -45,8 +45,8 @@ class EventC
                 'lieuE' => $event->getLieuE(),
                 'descrpE' => $event->getdescrpE(),
                 'categoE' => $event->getCategoE(),
-                'fraisE' => $event->getFraisE(),
-                'img' => $event->getimg()
+                'fraisE' => $event->getFraisE()
+                
             ]);
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
@@ -66,19 +66,19 @@ class EventC
                 descrpE = :descrpE, 
                 categoE = :categoE, 
                 fraisE = :fraisE,
-                img = :img
+                
                 WHERE idE = :idE'
             );
             $query->execute([
                 'idE' => $idE,
                 'nomE' => $event->getNomE(),
                 'dateE' => $event->getDateE()->format('Y-m-d'),
-                'heureE' => $event->getheureeE()->format('H:i:s'),
+                'heureE' => $event->getheureE()->format('H:i:s'),
                 'lieuE' => $event->getLieuE(),
                 'descrpE' => $event->getdescrpE(),
                 'categoE' => $event->getCategoE(),
                 'fraisE' => $event->getFraisE(),
-                'img' => $event->getimg()
+             
 
             ]);
             echo $query->rowCount() . " records UPDATED successfully <br>";
@@ -102,5 +102,62 @@ class EventC
             die('Error: ' . $e->getMessage());
         }
     }
+    //**************************
+    public function getEventStatistics()
+    {
+        $sql = "SELECT categoE, COUNT(*) AS totalEvents, AVG(fraisE) AS averageCost FROM events GROUP BY categoE";
+        $db = Config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute();
+            $statistics = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $statistics;
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+            return []; // Retourne un tableau vide en cas d'erreur
+        }
+    }
+
+
+
+    /******************** */
+    public function getEventsForCalendar()
+    {
+        $sql = "SELECT dateE FROM events"; // Sélectionner uniquement la colonne dateE
+        $db = config::getConnexion();
+    
+        try {
+            $query = $db->query($sql);
+            if (!$query) {
+                $errorInfo = $db->errorInfo(); // Obtenir les informations sur l'erreur
+                throw new Exception("Query failed: " . $errorInfo[2]); // Lancer une exception avec le message d'erreur
+            }
+            $eventsData = $query->fetchAll(PDO::FETCH_ASSOC);
+    
+            $events = [];
+            foreach ($eventsData as $eventData) {
+                // Créer un tableau associatif pour chaque événement
+                $event = [
+                    'start' => $eventData['dateE'], // Date de début de l'événement
+                    // Vous pouvez ajouter d'autres champs d'événement ici si nécessaire
+                ];
+                $events[] = $event;
+            }
+            echo '<pre>'; // Commencez par un balisage pour que la sortie soit bien formatée
+        print_r($events); // Afficher les événements
+        echo '</pre>';
+    
+            return $events;
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage(); // Afficher l'erreur dans la console JavaScript
+            // die('Error: ' . $e->getMessage());
+        }
+    }
+    
+    
+    
+
+
+
 }
 ?>

@@ -133,6 +133,23 @@ class ReviewC
              }
          }
          
+         public function updateReview($idRev, $stars)
+{
+    try {
+        $pdo = config::getConnexion();
+        $query = $pdo->prepare("UPDATE reviews SET stars = :stars WHERE idRev = :idRev");
+        $query->execute([
+            'idRev' => $idRev,
+            'stars' => $stars
+        ]);
+        echo "Review updated successfully";
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+         
+
          public function sortEventsByRate()
          {
              try {

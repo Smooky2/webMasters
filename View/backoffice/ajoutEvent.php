@@ -1,33 +1,64 @@
 <?php
 
-include '..\aide\config.php';
-include '..\aide\Event.php';
+include '..\aide\EventC.php';
+$error = "";
+$event = null;
+$eventC = new EventC();
 
-// Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Create new Event object
+// Check if all required event information is set
+if (
+    isset($_POST["idE"]) &&
+    isset($_POST["nomE"]) &&
+    isset($_POST["dateE"]) &&
+    isset($_POST["heureE"]) &&
+    isset($_POST["lieuE"]) &&
+    isset($_POST["descrpE"]) &&
+    isset($_POST["categoE"]) &&
+    isset($_POST["fraisE"])
+) {
+    // Create DateTime object for date and time
+    $dateTime = new DateTime($_POST['dateE'] . ' ' . $_POST['heureE']);
+
+    // Create Event object
     $event = new Event(
         $_POST['idE'],
         $_POST['nomE'],
-        new DateTime($_POST['dateE']),
-        new DateTime($_POST['heureE']),
+        $dateTime,
+        $dateTime,
         $_POST['lieuE'],
         $_POST['descrpE'],
         $_POST['categoE'],
-        $_POST['fraisE'],
-        null // Image path will be set later
-    )
-    ;
+        $_POST['fraisE']
+        
+    );
 
-    // Handle image upload
-    $targetDir = "uploads/"; // Directory to save images
-    $targetFile = $targetDir . basename($_FILES["image"]["name"]);
+    // Attempt to add the event to the database
+    if ($eventC->addEvent($event)) {
+        echo "Event added successfully.";
+    } else {
+        echo "Failed to add event to the database.";
+    }
+} else {
+    $error = "Missing information";
+}
+
+
+/*
+include '..\aide\EventC.php';
+$error = "";
+$event = null;
+$eventC = new EventC();
+
+// Check if image file is uploaded
+if (isset($_FILES['img'])) {
+    $target_dir = "C:/xampp/htdocs/sahar_2A/jareb/uploads/"; // Specify the directory where you want to store the images
+    $target_file = $target_dir . basename($_FILES["img"]["name"]);
     $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($targetFile,PATHINFO_EXTENSION));
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
     // Check if image file is a actual image or fake image
-    $check = getimagesize($_FILES["image"]["tmp_name"]);
-    if($check !== false) {
+    $check = getimagesize($_FILES["img"]["tmp_name"]);
+    if ($check !== false) {
         echo "File is an image - " . $check["mime"] . ".";
         $uploadOk = 1;
     } else {
@@ -35,21 +66,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $uploadOk = 0;
     }
 
-    // Check if file already exists
-    if (file_exists($targetFile)) {
-        echo "Sorry, file already exists.";
-        $uploadOk = 0;
-    }
+
 
     // Check file size
-    if ($_FILES["image"]["size"] > 500000) {
+    if ($_FILES["img"]["size"] > 500000) { // Adjust this value according to your requirements
         echo "Sorry, your file is too large.";
         $uploadOk = 0;
     }
 
     // Allow certain file formats
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-    && $imageFileType != "gif" ) {
+    $allowedFormats = array("jpg", "jpeg", "png", "gif");
+    if (!in_array($imageFileType, $allowedFormats)) {
         echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
         $uploadOk = 0;
     }
@@ -57,22 +84,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
         echo "Sorry, your file was not uploaded.";
-    // if everything is ok, try to upload file
+        
     } else {
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-            echo "The file ". htmlspecialchars( basename( $_FILES["image"]["name"])). " has been uploaded.";
-            // Set image path for the event
-            $event->setImg($targetFile);
+        if (move_uploaded_file($_FILES["img"]["tmp_name"], $target_file)) {
+            echo "The file " . basename($_FILES["img"]["name"]) . " has been uploaded.";
 
-            // Now add the event to the database
-            $eventController = new EventC();
-            $eventController->addEvent($event);
+            // Check if all required event information is set
+            if (
+                isset($_POST["idE"]) &&
+                isset($_POST["nomE"]) &&
+                isset($_POST["dateE"]) &&
+                isset($_POST["heureE"]) &&
+                isset($_POST["lieuE"]) &&
+                isset($_POST["descrpE"]) &&
+                isset($_POST["categoE"]) &&
+                isset($_POST["fraisE"]) &&
+                isset($_POST["img"])
+
+            ) {
+                // Create DateTime object for date and time
+                $dateTime = new DateTime($_POST['dateE'] . ' ' . $_POST['heureE']);
+
+                // Create Event object with image name
+                $event = new Event(
+                    $_POST['idE'],
+                    $_POST['nomE'],
+                    $dateTime,
+                    $dateTime,
+                    $_POST['lieuE'],
+                    $_POST['descrpE'],
+                    $_POST['categoE'],
+                    $_POST['fraisE'],
+                    //$_POST['img']
+                    basename($_FILES["img"]["name"]) // Passing the image name to the Event object
+                );
+
+                // Attempt to add the event to the database
+                if ($eventC->addEvent($event)) {
+                    echo "Event added successfully.";
+                } else {
+                    echo "Failed to add event to the database.";
+                }
+            } else {
+                $error = "Missing information";
+            }
         } else {
             echo "Sorry, there was an error uploading your file.";
         }
     }
 }
-
+*/
 ?>
 
 <!DOCTYPE html>
@@ -292,10 +353,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="fraisE" class="form-label">Frais:</label>
         <input type="text"   name="fraisE" id="fraisE" class="form-control">
     </div>
-    <div class="mb-3">
-    <label for="img" class="form-label">Image:</label>
-    <input type="file" id="img" name="img" class="form-control" >
-    </div>
+    
 
     <!-- Submit Button -->
     <input type="submit" value="Save">

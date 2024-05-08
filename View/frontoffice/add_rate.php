@@ -6,11 +6,11 @@ $error= "";
 $rev = null;
 if (isset($_GET["id"])){
     $idEvent = $_GET["id"];
-    echo $idEvent;
+    //echo $idEvent;
 }
 if (isset($_POST["idEvent"])){
     $idEvent = $_POST["idEvent"];
-    echo $idEvent;
+    //echo $idEvent;
 }
 // create an instance of the controller
 $revC = new ReviewC();
@@ -69,6 +69,10 @@ if (
             margin-top: 20px;
             text-align: center;
         }
+        .back-btn {
+            margin-top: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -90,6 +94,10 @@ if (
                     <button type="submit" class="btn btn-primary">Submit Rating</button>
                 </div>
             </form>
+            <!-- Button to return to Eventfront.php -->
+            <div class="back-btn">
+                <a href="Eventfront.php" class="btn btn-secondary">Back to Eventfront</a>
+            </div>
         </div>
     </div>
 
@@ -106,8 +114,11 @@ if (
             });
         });
     </script>
+   
 </body>
 </html>
+
+
 
 
 
