@@ -151,8 +151,8 @@ $list = $eventC->listEvent();
                 <li><a href="EventSort.php">sort</a></li>
                 <li><a href="Eventcalender.php">calender</a></li>
                 <li><a href="statistiqueE.php">statistique</a></li>
-                <li><a href="updateR.php">update a Review</a></li>
 
+                
             </ul>
         </li>
         <li class="scroll"><a href="#explore">explore</a></li>

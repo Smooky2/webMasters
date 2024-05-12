@@ -227,11 +227,13 @@ $statistics = $eventController->getEventStatistics();
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Event <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="Eventfront.php">List Event</a></li>
-                                    <li><a href="searchReview.php">Event's Rate</a></li>
-                                    <li><a href="EventSort.php">sort</a></li>
-                                    <li><a href="Eventcalender.php">calender</a></li>
-                                    <li><a href="statistiqueE.php">statistique</a></li>
+                                <li><a href="Eventfront.php">List Event</a></li>
+                                <li><a href="searchReview.php">Event's Rate</a></li>
+                                <li><a href="EventSort.php">sort</a></li>
+                                <li><a href="Eventcalender.php">calender</a></li>
+                                <li><a href="statistiqueE.php">statistique</a></li>
+                                
+                               
                                 </ul>
                             </li>
                             <li class="scroll"><a href="#explore">explore</a></li>

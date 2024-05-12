@@ -62,3 +62,107 @@ if (isset($_GET["idRev"])) {
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>ESPRIT-DISCOVERY - Bootstrap Admin Template</title>
+    <!-- Meta tags and other dependencies -->
+    <!-- Your custom styles -->
+    <style>
+        /* CSS styles for the calendar */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .day {
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .event {
+            background-color: #f0f0f0;
+            padding: 2px;
+            margin-bottom: 2px;
+            font-size: 12px;
+        }
+
+        .month-year {
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .weekday {
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .centered {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Your existing HTML structure -->
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner, Sidebar, and Navbar -->
+        <div id="page-wrapper">
+            <!-- Navigation Links for Previous and Next Month -->
+            <div class="centered">
+                <a href="?month=<?php echo $currentMonth > 1 ? ($currentMonth - 1) : 12; ?>&year=<?php echo $currentMonth > 1 ? $currentYear : ($currentYear - 1); ?>">Previous Month</a>
+                <span class="month-year"><?php echo date("F Y", mktime(0, 0, 0, $currentMonth, 1, $currentYear)); ?></span>
+                <a href="?month=<?php echo $currentMonth < 12 ? ($currentMonth + 1) : 1; ?>&year=<?php echo $currentMonth < 12 ? $currentYear : ($currentYear + 1); ?>">Next Month</a>
+            </div>
+            <!-- Calendar Container -->
+            <div id="calendarContainer">
+                <div class="calendar">
+                    <!-- Display Weekdays -->
+                    <?php
+                    $weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                    foreach ($weekdays as $weekday) {
+                        echo '<div class="weekday">' . substr($weekday, 0, 3) . '</div>';
+                    }
+                    // Start the calendar grid
+                    $dayCounter = 1 - $firstDayOfMonth;
+                    while ($dayCounter <= $daysInMonth) {
+                        echo '<div class="day">';
+                        if ($dayCounter > 0) {
+                            echo '<strong>' . $dayCounter . '</strong>';
+                            // Check if there are events for this day
+                            if (isset($eventc[$currentYear][$currentMonth][$dayCounter])) {
+                                $eventsForDay = $eventc[$currentYear][$currentMonth][$dayCounter];
+                                foreach ($eventsForDay as $event) {
+                                    echo '<div class="event">' . htmlspecialchars($event['nomE']) . ', ' . htmlspecialchars($event['lieuE']) . ', ' . htmlspecialchars($event['categoE']) . '</div>';
+                                }
+                            }
+                        }
+                        echo '</div>';
+                        $dayCounter++;
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap and other JS dependencies -->
+</body>
+
+</html>
