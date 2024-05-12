@@ -112,9 +112,12 @@ if (
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>entité réservation</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="hotel.html" class="dropdown-item">Nos Hotels</a>
-                            <a href="forfait.html" class="dropdown-item">Nos forfaits</a>
-                            <a href="reservations.html" class="dropdown-item">Nos réservations </a>
+                            <a href="hotel.php" class="dropdown-item">Nos Hotels</a>
+                            <a href="formHotel.php" class="dropdown-item">formaulaire Hotel</a>
+                            <a href="reservations.php" class="dropdown-item">Nos réservations </a>
+                            <a href="rechercherhotel.php" class="dropdown-item">rechercher </a>
+                            <a href="calendar.php" class="dropdown-item">calendrier </a>
+
                         </div>
                     </div>
                     <a href="forum.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>entité_forum</a>
