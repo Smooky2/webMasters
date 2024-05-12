@@ -7,7 +7,7 @@ class config
     {
         try {
             $pdo = new PDO(
-                'mysql:host=127.0.0.1;dbname=reservation',
+                'mysql:host=127.0.0.1;dbname=projetweb',
                 'root',
                 '',
                 [

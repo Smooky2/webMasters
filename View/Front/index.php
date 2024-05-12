@@ -134,7 +134,36 @@ session_start();
         <li class="scroll active"><a href="#home">accueil</a></li>
         <li class="scroll"><a href="#works">plus d'informations</a></li>
         <li class="scroll"><a href="#explore">réservation</a></li>
-        <li class="scroll"><a href="#reviews">événement</a></li>
+		
+		<?php
+    // Check if user is logged in
+    if (isset($_SESSION['id'])) {
+        echo '<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Event <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="Eventfront.php">List Event</a></li>
+                <li><a href="searchReview.php">Events Rate</a></li>
+                <li><a href="EventSort.php">sort</a></li>
+                <li><a href="Eventcalender.php">calender</a></li>
+                <li><a href="statistiqueE.php">statistique</a></li>
+            </ul>
+        </li>';
+    } else {
+        echo '<li><a href="#explore" onclick="showLoginMessage()">evenement</a></li>';
+    } 
+?>
+
+<script>
+    function showLoginMessage() {
+        // Display the login message
+        alert("Veuillez vous connecter pour voir les événements.");
+        // Prevent the default behavior of the link
+        event.preventDefault();
+    }
+</script>
+
+
+
         <li class="scroll"><a href="#blog">forum</a></li>
         <li class="scroll"><a href="#contact">réclamation</a></li>
 

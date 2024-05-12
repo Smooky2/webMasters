@@ -68,7 +68,14 @@
                         </div>
                     </div>
                     
-                    <a href="evenement.php" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>entité evenement</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>evenement</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="ajoutEvent.php" class="dropdown-item"> Ajout evenement</a>
+                            <a href="listEvents.php" class="dropdown-item">Nos evenement</a>
+                            
+                        </div>
+                    </div>
                     <a href="reclamation.php" class="nav-item nav-link"><i class="fa fa-table me-2"></i>entité réclamation</a>
                     <a href="user.php" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>entité user</a>
                     <div class="nav-item dropdown">

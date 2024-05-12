@@ -1,16 +1,31 @@
- 
 <?php
-require '../../contoller/HotelC.php';
+include '..\aide\ReviewC.php';
+$revC = new ReviewC();
 
-$hotelC=new Hotels();
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["idH"]) && isset($_POST['search'])) {
-        $idH = $_POST["idH"];
-        $list = $hotelC->afficherReservations($idH);
-    } 
-    $hotels=$hotelC->afficherHotel();
+// Check if idRev is set in the URL
+echo $_GET["id"];
+if(isset($_GET["id"])) {
+    $id = $_GET["id"];
+    $list = $revC->listrates($id);
+} else {
+    // Handle the case where idRev is not set
+    $list = array(); // Set an empty array
+}
 
-}?>
+
+/*if(isset($_GET["idRev"])) {
+
+    $id = $_GET["idRev"];
+    $list = $revC->AfficherReview($id);
+}*/
+
+/*$revC = new ReviewC();
+$list = $revC->listrate();*/
+?>
+<!doctype html>
+<html class="no-js" lang="en">
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,7 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-           
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
         <!-- Spinner End -->
 
@@ -70,27 +87,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="index.php" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Accueil</a>
+                    <a href="index.html" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Accueil</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>entité réservation</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="hotel.php" class="dropdown-item">Nos Hotels</a>
-                            <a href="formHotel.php" class="dropdown-item">formaulaire Hotel</a>
-                            <a href="table.php" class="dropdown-item">Nos réservations </a>
-                            <a href="rechercherhotel.php" class="dropdown-item">rechercher </a>
+                            <a href="hotel.html" class="dropdown-item">Nos Hotels</a>
+                            <a href="forfait.html" class="dropdown-item">Nos forfaits</a>
+                            <a href="reservations.html" class="dropdown-item">Nos réservations </a>
                         </div>
                     </div>
+                    <a href="forum.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>entité_forum</a>
                     
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>evenement</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="ajoutEvent.php" class="dropdown-item"> Ajout evenement</a>
-                            <a href="listEvents.php" class="dropdown-item">Nos evenement</a>
+                           <a href="ajoutEvent.php" class="dropdown-item">Ajout evenement</a>
+                           <a href="listEvents.php" class="dropdown-item">Nos evenement</a>
                             
                         </div>
                     </div>
-                    <a href="reclamation.php" class="nav-item nav-link"><i class="fa fa-table me-2"></i>entité réclamation</a>
-                    <a href="user.php" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>entité user</a>
+
+
+                    <a href="reclamation.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>entité réclamation</a>
+                    <a href="user.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>entité user</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -104,116 +123,79 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </nav>
         </div>
         <!-- Sidebar End -->
-        
-        <!-- Content Start -->
-        <div class="content">
-                    <!-- Navbar End -->
-            
-            <!-- Form Start -->
-   <style>
-form {
-    margin-bottom: 20px;
-}
-
-label {
-    font-weight: bold;
-}
-
-select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-}
-
-input[type="submit"] {
-    padding: 8px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-/* Styles pour la liste de réservations */
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-family: 'Heebo', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-}
-
-/* Styles pour le bouton de retour en haut de page */
-.back-to-top {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: none;
-    font-size: 20px;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-}
-.reservation-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333; /* Couleur de texte foncée */
-    margin-bottom: 20px;
-
-.back-to-top:hover {
-    background-color: #0056b3;
-}
-}
-</style>         
 
 
+<!-- Content Start -->
+<div class="content">
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+        <!-- Navbar Brand -->
+        <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+            <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+        </a>
+        <!-- Sidebar Toggler -->
+        <a href="#" class="sidebar-toggler flex-shrink-0">
+            <i class="fa fa-bars"></i>
+        </a>
+        <!-- Search Form (visible on medium and larger screens) -->
+        <form class="d-none d-md-flex ms-4">
+            <input class="form-control border-0" type="search" placeholder="Search">
+        </form>
+        <!-- Navbar Items (align right) -->
+        <div class="navbar-nav align-items-center ms-auto">
+            <!-- Messages Dropdown -->
+            <!-- Notifications Dropdown -->
+            <!-- User Profile Dropdown -->
+            <!-- User Profile Dropdown Menu -->
+        </div>
+    </nav>
+    <!-- Navbar End -->
+    <div class="container">
+            <!-- Table (Sample Data) -->
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>nombre de stars</th>
+                            <th>Date</th>
+                            <th>Id Event</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                   
+                        <?php foreach ($list as $rev)  
+                        {
+                            ?>
+                            <tr>
+                                <td><?= $rev['idRev']; ?></td>
+                                <td><?= $rev['stars']; ?></td>
+                                <td><?= $rev['dateRev']; ?></td>
+                                <td><?= $rev['idev']; ?></td>
+                               
+                                <td>
+                                <a href="../delete_rate.php?id=<?= $rev['idRev']; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                                
+                            </tr>
+                        <?php 
+                        }
+                        
+                        ?>
+                    </tbody>
+                </table>
+                </div>
+               <!-- Centered Search Form -->
 
-    <br>
-    <h2>Reservations correspondant au hôtel sélectionné :</h2>
-        <form action="" method="POST">
-            <label for="idH"> selectionnez un hotel:</label>
-            <select name="idH" id="idH">
-                <?php
-                foreach($hotels as $hotel) {
-                    echo '<option value="' . $hotel["idH"] . '">' . $hotel["name"] . '</option>';
-            }
-                ?>
-            </select>
-            <input type="submit" value="Rechercher" name="search">
-            </form>
-        <?php if (isset($list)) { ?>
-        <br>
-    <h2> reservations correspondant au hotel selectionné : <h2>
-        <ul>
-            <?php foreach($list as $reservation){ ?>
-             <li><?=$reservation["id"] ?> -<?=$reservation["start"] ?> -<?=$reservation["endDate"] ?>-<?=$reservation["idH"]?>- <?=$reservation["my_image"] ?> dt</li>
-             <?php } ?>
-            </ul>
-            <?php
-            } ?>
-      
+            </div>
+        </div>
+    <!-- Back to Top Button -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
 <!-- Content End -->
 
-
- 
-<!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -228,8 +210,7 @@ li {
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    
 </body>
 
 </html>
-  
-  
