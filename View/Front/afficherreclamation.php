@@ -1,6 +1,6 @@
 <?php
-require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reclamationC.php';
-require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reponseC.php';
+require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
+require_once 'C:\xampp\htdocs\projetfinal\Contoller\reponseC.php';
 session_start();
 $reclamationC = new reclamationC();
 $listereclamations = $reclamationC->afficherreclamations();
@@ -72,52 +72,9 @@ $reponseC = new reponseC();
         <![endif]-->
 		
 		<!--header-top start -->
-		<header id="header-top" class="header-top">
-			<ul>
-				<li>
-					<div class="header-top-left">
-						<ul>
-							<li class="select-opt">
-								<select name="language" id="language">
-									<option value="default">EN</option>
-									<option value="Bangla">BN</option>
-									<option value="Arabic">AB</option>
-								</select>
-							</li>
-							<li class="select-opt">
-								<select name="currency" id="currency">
-									<option value="usd">USD</option>
-									<option value="euro">Euro</option>
-									<option value="bdt">BDT</option>
-								</select>
-							</li>
-							<li class="select-opt">
-								<a href="#"><span class="lnr lnr-magnifier"></span></a>
-							</li>
-						</ul>
-					</div>
-				</li>
-				<li class="head-responsive-right pull-right">
-					<div class="header-top-right">
-						<ul>
-							<li class="header-top-contact">
-								+216 28505563
-							</li>
-							<li class="header-top-contact">
-								<a href="#">sign in</a>
-							</li>
-							<li class="header-top-contact">
-								<a href="#">register</a>
-							</li>
-						</ul>
-					</div>
-				</li>
-			</ul>
-					
-		</header><!--/.header-top-->
+		
 		<!--header-top end -->
 
-		<!-- top-area Start -->
 		<section class="top-area">
 			<div class="header-area">
 				<!-- Start Navigation -->
@@ -138,7 +95,7 @@ $reponseC = new reponseC();
 			            <!-- Collect the nav links, forms, and other content for toggling -->
 						<div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
     <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-        <li class="scroll active"><a href="#home">accueil</a></li>
+        <li class="scroll active"><a href="index.php">accueil</a></li>
         <li class="scroll"><a href="#works">plus d'informations</a></li>
         <li class="scroll"><a href="#explore">réservation</a></li>
 		
@@ -171,8 +128,8 @@ $reponseC = new reponseC();
 
 
 
-        <li class="scroll"><a href="#blog">forum</a></li>
-        <li class="scroll"><a href="afficherreclamation.php">réclamation</a></li>
+        <li class="#"><a href="forum.php">forum</a></li>
+        <li class="#"><a href="afficherreclamation.php">réclamation</a></li>
 
         <?php
         // Check if user is logged in

@@ -1,6 +1,7 @@
 <?php
-require_once 'C:\xampp\htdocs\user+reservation+event\Model\reclamation.php';
-require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reclamationC.php';
+session_start();
+require_once 'C:\xampp\htdocs\projetfinal\Model\reclamation.php';
+require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
 
 $error = "";
 
@@ -96,40 +97,87 @@ if (
 <body>
 <!-- top-area Start -->
 <section class="top-area">
-    <div class="header-area">
-        <!-- Start Navigation -->
-        <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+			<div class="header-area">
+				<!-- Start Navigation -->
+			    <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
 
-            <div class="container">
+			        <div class="container">
 
-                <!-- Start Header Navigation -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
-                        <i class="fa fa-bars"></i>
-                    </button>
-                    <a class="navbar-brand" href="index.html"><img src="C:\xampp\htdocs\projet\view\front\assets\img\logo.png" alt="" style="width: 100px;height: 100px;"></a>
+			            <!-- Start Header Navigation -->
+			            <div class="navbar-header">
+			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+			                    <i class="fa fa-bars"></i>
+			                </button>
+			                <a class="navbar-brand" href="index.php">esprit<span>discovery</span></a>
 
-                </div><!--/.navbar-header-->
-                <!-- End Header Navigation -->
+			            </div><!--/.navbar-header-->
+			            <!-- End Header Navigation -->
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
-                    <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                        <li class=" scroll "><a href="index.html">home</a></li>
-                        <li class="scroll"><a href="#works">how it works</a></li>
-                        <li class="scroll"><a href="#explore">explore</a></li>
-                        <li class="scroll"><a href="#reviews">review</a></li>
-                        <li class="scroll active"><a href="forum.html">forum</a></li>
-                        <li class="scroll"><a href="#contact">contact</a></li>
-                    </ul><!--/.nav -->
-                </div><!-- /.navbar-collapse -->
-            </div><!--/.container-->
-        </nav><!--/nav-->
-        <!-- End Navigation -->
-    </div><!--/.header-area-->
-    <div class="clearfix"></div>
+			            <!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+    <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+        <li class="scroll active"><a href="index.php">accueil</a></li>
+        <li class="scroll"><a href="#works">plus d'informations</a></li>
+        <li class="scroll"><a href="#explore">réservation</a></li>
+		
+		<?php
+    // Check if user is logged in
+    if (isset($_SESSION['id'])) {
+        echo '<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Event <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="Eventfront.php">List Event</a></li>
+                <li><a href="searchReview.php">Events Rate</a></li>
+                <li><a href="EventSort.php">sort</a></li>
+                <li><a href="Eventcalender.php">calender</a></li>
+                <li><a href="statistiqueE.php">statistique</a></li>
+            </ul>
+        </li>';
+    } else {
+        echo '<li><a href="#explore" onclick="showLoginMessage()">evenement</a></li>';
+    } 
+?>
 
-</section><!-- /.top-area-->
+<script>
+    function showLoginMessage() {
+        // Display the login message
+        alert("Veuillez vous connecter pour voir les événements.");
+        // Prevent the default behavior of the link
+        event.preventDefault();
+    }
+</script>
+
+
+
+        <li class="#"><a href="forum.php">forum</a></li>
+        <li class="#"><a href="afficherreclamation.php">réclamation</a></li>
+
+        <?php
+        // Check if user is logged in
+        if (isset($_SESSION['id'])) {
+            // Assuming you have the user ID stored in a variable named $userId
+            $userId = $_SESSION['id'];
+            echo '<li><a href="modifieruserfront.php?id=' . $userId . '">Update Profile</a></li>';
+            echo '<li><a href="logout.php">Déconnexion</a></li>';
+            // Affichage du nom de l'utilisateur sur la même ligne
+            $userName = $_SESSION['name']; 
+            echo '<li>' . $userName . '</li>'; 
+        } else {
+            echo '<li><a href="login.php">Connexion</a></li>';
+        }
+        ?>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+							</ul><!--/.nav -->
+			            </div><!-- /.navbar-collapse -->
+			        </div><!--/.container-->
+			    </nav><!--/nav-->
+			    <!-- End Navigation -->
+			</div><!--/.header-area-->
 <!-- top-area End -->
 
 

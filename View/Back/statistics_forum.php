@@ -1,42 +1,24 @@
 <?php
-// Include necessary files and establish a database connection
-require_once 'C:\xampp\htdocs\projetfinal\Model\reclamation.php';
-require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
-$reclamationC = new reclamationC();
-// Fetch statistics using the controller function
-$statistics =  $reclamationC->getReclamationStatistics();
-
-// Prepare data for Chart.js
-$labels = [];
-$data = [];
-
-foreach ($statistics as $row) {
-    $labels[] = $row['statut'];
-    $data[] = $row['count_per_statut'];
-}
-?>
-
-<?php
 // Include your forum controller
-require_once 'C:\xampp\htdocs\projetfinal\Model\reclamation.php';
-require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
+include_once 'C:\xampp\htdocs\projetfinal\contoller\forumC.php';
+include_once 'C:\xampp\htdocs\projetfinal\contoller\messageC.php';
 
-$reclamationC = new  reclamationC();
+$messageC = new  messageC();
 
-$statistics =  $reclamationC->getReclamationStatistics();
+$statistics =  $messageC->getCommentCountsByForum();
 
 
 $labels1 = [];
 $data1 = [];
 
 foreach ($statistics as $row) {
-  $labels1[] = $row['statut'];
-  $data1[] = $row['count_per_statut'];
+  $labels1[] = $row['forum_name'];
+  $data1[] = $row['comment_count'];
 }
 $dataJSON1 = json_encode($data1);
 $labelsJSON1 = json_encode($labels1);
 // Create an instance of the forum controller
-/*$forumC = new forumC();
+$forumC = new forumC();
 
 // Fetch forum data
 $forum = $forumC->listForum();
@@ -51,7 +33,7 @@ foreach ($forum as $single_forum) {
 
 // Convert data to JSON for JavaScript
 $dataJSON = json_encode($data);
-$labelsJSON = json_encode($labels);*/
+$labelsJSON = json_encode($labels);
 ?>
 
 
@@ -276,15 +258,6 @@ table tr:nth-child(even) {
                     </div>
                 </div>
             </nav>
-            <a style="text-decoration: none;
-            right: 100px;
-               position: absolute;
-               color: white;
-               background-color:blue;
-               padding: 10px 15px;
-               border-radius: 5px;
-               z-index: 999;
-               " href="afficherreclamation.php">Retour à la liste des réclamations</a>
             <div class="row">
                        <!-- <div class="col-md-6">
                             <h1>Nombres de vue Par Titre de poste</h1>
@@ -295,9 +268,8 @@ table tr:nth-child(even) {
                             </center>
                         </div>-->
 
-                        
                         <div class="col-md-6">
-                            <h1>Reclamation Listes :</h1>
+                            <h1>Nombres Commentaires Par poste</h1>
                             <center>
                                 <div class="mt-3">
                                     <canvas id="myBarChart" style="height: 400px; width: 100%;"></canvas>
@@ -329,13 +301,13 @@ table tr:nth-child(even) {
                         },
                         // Define your chart colors here
                         CHART_COLORS: {
-                            red: 'rgba(255, 99, 132, 0.8',
-                            orange: 'rgba(255, 159, 64, 0.',
-                            yellow: 'rgba(255, 205, 86, 0.8',
-                            green: 'rgba(75, 192, 192, 0.8',
-                            blue: 'rgba(54, 162, 235, 0.8',
-                            purple: 'rgba(153, 102, 255, 0.8',
-                            grey: 'rgba(201, 203, 207, 0.8'
+                            red: 'rgba(255, 99, 132, 0.8)',
+                            orange: 'rgba(255, 159, 64, 0.8)',
+                            yellow: 'rgba(255, 205, 86, 0.8)',
+                            green: 'rgba(75, 192, 192, 0.8)',
+                            blue: 'rgba(54, 162, 235, 0.8)',
+                            purple: 'rgba(153, 102, 255, 0.8)',
+                            grey: 'rgba(201, 203, 207, 0.8)'
                             // Add other colors as needed
                         }
                         // Add other utility methods as needed
@@ -458,13 +430,13 @@ table tr:nth-child(even) {
                         },
                         // Define your chart colors here
                         CHART_COLORS: {
-                            red: 'rgba(255, 99, 132, 0.8',
-                            orange: 'rgba(255, 159, 64, 0.8',
-                            yellow: 'rgba(255, 205, 86, 0.8',
-                            green: 'rgba(75, 192, 192, 0.8',
-                            blue: 'rgba(54, 162, 235, 0.8',
-                            purple: 'rgba(153, 102, 255, 0.8',
-                            grey: 'rgba(201, 203, 207, 0.8',
+                            red: 'rgba(255, 99, 132, 0.8)',
+                            orange: 'rgba(255, 159, 64, 0.8)',
+                            yellow: 'rgba(255, 205, 86, 0.8)',
+                            green: 'rgba(75, 192, 192, 0.8)',
+                            blue: 'rgba(54, 162, 235, 0.8)',
+                            purple: 'rgba(153, 102, 255, 0.8)',
+                            grey: 'rgba(201, 203, 207, 0.8)',
                             // Add other colors as needed
                         },
                         // Add other utility methods as needed
@@ -505,7 +477,7 @@ table tr:nth-child(even) {
                         data: {
                             labels: <?php echo $labelsJSON1; ?>,
                             datasets: [{
-                                label: 'Nb Reclamation',
+                                label: 'Nb Commentaire',
                                 data: <?php echo $dataJSON1; ?>,
                                 backgroundColor: Object.values(UtilsBar.CHART_COLORS),
                             }]

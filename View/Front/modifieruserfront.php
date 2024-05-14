@@ -1,6 +1,6 @@
 <?php
 session_start();
-    require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\userC.php';
+    require_once 'C:\xampp\htdocs\projetfinal\Contoller\userC.php';
     require_once '../../Model/user.php' ;
     $userC = new userC();
     if (isset($_GET['id'])) {

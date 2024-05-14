@@ -1,5 +1,5 @@
 <?php
- require 'C:\xampp\htdocs\sahar_2A\user+reservation+event\Contoller\userC.php';
+ require 'C:\xampp\htdocs\projetfinal\Contoller\userC.php';
 
     $userC = new userC();
     $userC->deleteUser($_GET['id']);

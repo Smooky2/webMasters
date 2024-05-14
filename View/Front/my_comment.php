@@ -1,29 +1,28 @@
 <?php
 session_start();
-require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
-require_once 'C:\xampp\projetfinal\Contoller\reponseC.php';
+include_once 'C:\xampp\htdocs\projetfinal\contoller\messageC.php';
+include_once 'C:\xampp\htdocs\projetfinal\contoller\forumC.php'; // Include the comment controller
+$c_comment = new messageC(); // Create an instance of the comment controller
+$c_forum = new forumC();
+// Assuming you have some sort of authentication system where you know the current user's ID
+$user_id = $_SESSION['id']; // Example user ID, replace with actual user ID from your authentication system
+//$forum_id = $_POST['forum_id'];
+$forum_id = $_GET['id_forum'];
 
-$reponseC = new reponseC();
-$listereponses = $reponseC->afficherby($_GET["IDR"]); // Fetching responses, adjust this as needed
+//$id_message = $_GET['id_message'];
+$forum = $c_forum->getForumById($forum_id);
+$my_comments = $c_comment->getCommentsByUserId($user_id); // Get comments by user ID
 
-
-if (!empty($listereponses)) {
-    $reponse = $listereponses[0]; // Considering you want to display only one response
-
-    // Display the response in the middle of the page
-    ?>
-
+?>
 
 <!doctype html>
 <html class="no-js" lang="en">
-
-    <head>
-        
-        <!-- meta data -->
-        <meta charset="utf-8">
+<head>
+     <!-- meta data -->
+     <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags must come first in the head; any other head content must come after these tags -->
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <link rel="stylesheet" href="forum.css">
         <!--font-family-->
 		<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -69,11 +68,38 @@ if (!empty($listereponses)) {
 			<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+    <!-- meta data -->
+    <!-- Add your meta tags, title, CSS, and JavaScript includes here -->
+<style>
+    <style>
+    table {
+    margin-top:  100px;  
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
 
-    </head>
-    <body>
-        <!-- top-area Start -->
-		<section class="top-area">
+
+table th,
+table td {
+    padding: 100px;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+</style>
+</style>
+</head>
+<body>
+<body>
+<section class="top-area">
 			<div class="header-area">
 				<!-- Start Navigation -->
 			    <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
@@ -155,72 +181,43 @@ if (!empty($listereponses)) {
 			    </nav><!--/nav-->
 			    <!-- End Navigation -->
 			</div><!--/.header-area-->
-<title>Page de réponse</title>
-        <style>
-     
+		    <div class="clearfix"></div>
 
-            .response-container {
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                max-width: 600px;
-                width: 100%;
-            }
-
-            .response-details {
-                margin-bottom: 15px;
-            }
-
-            label {
-                font-weight: bold;
-            }
-
-            input[type="text"],
-            textarea {
-                width: 100%;
-                padding: 8px;
-                margin-top: 5px;
-                margin-bottom: 15px;
-                border: 1px solid #ccc;
-                border-radius: 3px;
-                box-sizing: border-box;
-            }
-
-            input[type="submit"] {
-                background-color: purple;
-                color: #fff;
-                padding: 10px 15px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-        </style>
-    </head>
-<center>
-        <div  class="response-container">
-            <h1>Réponse</h1>
-            <div class="response-details">
-                <label for="date">Date:</label>
-                <input type="text" name="date" value="<?php echo $reponse['dater']; ?>" readonly><br>
-
-                <label for="sujet">Sujet:</label>
-                <input type="text" name="sujet" value="<?php echo $reponse['sujet']; ?>" readonly><br>
-
-                <label for="description">Description:</label>
-                <textarea name="description" readonly><?php echo $reponse['dess']; ?></textarea><br>
-            </div>
-
-            <form action="afficherreclamation.php" method="get">
-                <input type="hidden" name="IDR" value="<?php echo $reponse['IDR']; ?>">
-                <input type="submit" value="Retour">
-            </form>
-        </div>
-		</center>
-    </html>
-    <?php
-} else {
-    // If no responses are available
-    echo "Aucune réponse disponible pour le moment.";
-}
-?>
+		</section><!-- /.top-area-->
+		<!-- top-area End -->
+        <h2>My Comments:</h2>
+        <table >
+  <thead>
+    <tr>
+      <th >contenu</th>
+      <th >Date de poste</th>
+      <th>titre de forum</th>
+      <th>Suppression</th>
+      
+      
+      
+    </tr>
+  </thead>   
+    
+    <?php if(!empty($my_comments)): ?>
+        <tr style="background-color: #f2f2f2;">
+            <?php foreach ($my_comments as $comment): ?>
+                <td><?php echo $comment['contenu']; ?></td>
+                <td ><?php echo $comment['date_poste'];?></td>
+                <td ><?php echo $forum['titre'];?></td>
+                <td><button type="button" class="btn btn-danger m-2"><a href="suppcmntr.php?id_message=<?= $comment['id_message']; ?>">Delete</a></button></td>
+                <td>
+                <button type="button" class="btn btn-danger m-2">
+                <a href="modifier_comment.php?id_message=<?php echo $comment['id_message']; ?>&id_forum=<?php echo $forum['id_forum']; ?>">Modify</a>
+                </button>
+                </td>
+            </tr>
+                
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>No comments yet.</p>
+    <?php endif; ?>
+    
+</body>
+</html>

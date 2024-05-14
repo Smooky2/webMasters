@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include_once 'C:\xampp\htdocs\user+reservation+event\Contoller\userC.php';
+include_once 'C:\xampp\htdocs\projetfinal\Contoller\userC.php';
 require '../../Model/user.php';
 
 $errorMessage = '';
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" placeholder="Search Here">
             </li>
             <li>
-                <a href="forum.html">forum</a>
+                <a href="forum.php">forum</a>
             </li>
         </ul>
     </div>

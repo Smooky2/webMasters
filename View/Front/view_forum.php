@@ -1,19 +1,19 @@
 <?php
 session_start();
-require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
-require_once 'C:\xampp\projetfinal\Contoller\reponseC.php';
+include 'C:\xampp\htdocs\projetfinal\contoller\forumC.php';
+$c = new forumC();
+$forumList = $c->listForum();
 
-$reponseC = new reponseC();
-$listereponses = $reponseC->afficherby($_GET["IDR"]); // Fetching responses, adjust this as needed
+if(isset($_POST['triCroissant'])) {
+    $c = new forumC();
+    $forumList = $c->trierforumS('ASC');
+}
 
-
-if (!empty($listereponses)) {
-    $reponse = $listereponses[0]; // Considering you want to display only one response
-
-    // Display the response in the middle of the page
-    ?>
-
-
+if(isset($_POST['triDecroissant'])) {
+    $c = new forumC();
+    $forumList = $c->trierforum('DESC');
+}
+?>
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -23,7 +23,7 @@ if (!empty($listereponses)) {
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags must come first in the head; any other head content must come after these tags -->
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <link rel="stylesheet" href="forum.css">
         <!--font-family-->
 		<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -69,11 +69,33 @@ if (!empty($listereponses)) {
 			<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+<style>
+    table {
+    margin-top:  100px;  
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
 
+
+table th,
+table td {
+    padding: 100px;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+</style>
     </head>
     <body>
-        <!-- top-area Start -->
-		<section class="top-area">
+    <section class="top-area">
 			<div class="header-area">
 				<!-- Start Navigation -->
 			    <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
@@ -155,72 +177,42 @@ if (!empty($listereponses)) {
 			    </nav><!--/nav-->
 			    <!-- End Navigation -->
 			</div><!--/.header-area-->
-<title>Page de réponse</title>
-        <style>
-     
+		
+        <form method="POST" action="">
+<input type="submit" name="triCroissant" value="Tri Croissant" class="">
+  <input type="submit" name="triDecroissant" value="Tri Décroissant" class="">
+</form>
+        <table >
+  <thead>
+    <tr>
+      <th >Titre</th>
+      <th >Description</th>
+      <th >Date de création</th>
+      <th ></th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($forumList as $forum):?>
+      <tr style="background-color: #f2f2f2;">
+        <td ><?php echo $forum['titre'];?></td>
+        <td ><?php echo $forum['description'];?></td>
+        <td ><?php echo $forum['date_creation'];?></td>
+        <td><a href="comment.php?id_forum=<?php echo $forum['id_forum']; ?>">Add comment</a></td>
 
-            .response-container {
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                max-width: 600px;
-                width: 100%;
-            }
+      </tr>
+    <?php endforeach;?>
+  </tbody>
+</table>
+<form method="POST" action="recherche.php">
+<input type="button" value="Ajouter un forum" onclick="window.location='add_forum.php'" >
 
-            .response-details {
-                margin-bottom: 15px;
-            }
+<input type="text" id="search" name="titre" placeholder="Search..">
 
-            label {
-                font-weight: bold;
-            }
+<button type="submit" name="btn-search">Search</button>
+</form>
 
-            input[type="text"],
-            textarea {
-                width: 100%;
-                padding: 8px;
-                margin-top: 5px;
-                margin-bottom: 15px;
-                border: 1px solid #ccc;
-                border-radius: 3px;
-                box-sizing: border-box;
-            }
 
-            input[type="submit"] {
-                background-color: purple;
-                color: #fff;
-                padding: 10px 15px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-        </style>
-    </head>
-<center>
-        <div  class="response-container">
-            <h1>Réponse</h1>
-            <div class="response-details">
-                <label for="date">Date:</label>
-                <input type="text" name="date" value="<?php echo $reponse['dater']; ?>" readonly><br>
 
-                <label for="sujet">Sujet:</label>
-                <input type="text" name="sujet" value="<?php echo $reponse['sujet']; ?>" readonly><br>
-
-                <label for="description">Description:</label>
-                <textarea name="description" readonly><?php echo $reponse['dess']; ?></textarea><br>
-            </div>
-
-            <form action="afficherreclamation.php" method="get">
-                <input type="hidden" name="IDR" value="<?php echo $reponse['IDR']; ?>">
-                <input type="submit" value="Retour">
-            </form>
-        </div>
-		</center>
-    </html>
-    <?php
-} else {
-    // If no responses are available
-    echo "Aucune réponse disponible pour le moment.";
-}
-?>
+    <script src="controle.js"></script>
+    </body>
+</html>

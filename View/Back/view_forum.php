@@ -1,23 +1,11 @@
 <?php
-require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
-require_once 'C:\xampp\htdocs\projetfinal\Contoller\reponseC.php';
-$reclamationC = new reclamationC();
-$typer = isset($_GET["typer"]) ? $_GET["typer"] : 'all';
-$listereclamations = $reclamationC->afficherfilter($typer);
+include 'C:\xampp\htdocs\projetfinal\contoller\forumC.php';
+$c = new forumC();
+$forumList = $c->listForum();
 
-if ($listereclamations) {
-    // Process $listereclamations as needed
-    foreach ($listereclamations as $reclamation) {
-        // Your logic here
-    }
-} else {
-    echo "No reclamation found."; // Display a message or handle the case when no reclamation is found
-}
-$reponseC = new reponseC();
+
 
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,8 +37,35 @@ $reponseC = new reponseC();
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-   
+    <style>
+table {
+    margin-top:  100px;  
+    width: 60%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-left: 70px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
 
+
+table th,
+table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    
+}
+
+table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+</style>
 </head>
 
 <body>
@@ -95,7 +110,7 @@ $reponseC = new reponseC();
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="ajout.php" class="dropdown-item">Ajout</a>
                             <a href="modifier_forum.php" class="dropdown-item">Modifier_forum</a>
-                            <a href="supp_forum.php" class="dropdown-item">Suppresion </a>
+                            
                             <a href="view_forum.php" class="dropdown-item">affichage </a>
                         </div>
                     </div>
@@ -114,8 +129,14 @@ $reponseC = new reponseC();
                 </div>
             </nav>
         </div>
+        <!-- Sidebar End -->
+        
+        
+                    
+               
+    
         <!-- Content Start -->
-     <div class="content">
+        <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
@@ -204,182 +225,52 @@ $reponseC = new reponseC();
                     </div>
                 </div>
             </nav>
-        <!-- Sidebar End -->
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <center>
-    <h1>Liste des reclamations</h1>
-  </center>
-  <form action="filtered_pageadmin.php" method="GET">
-    <label for="typer-filter">Filter by Type:</label>
-    <select id="typer-filter" name="typer">
-        <?php
-        $unique_types = $reclamationC->getUniqueTyperValues(); // Replace with your actual method to fetch data
-
-        foreach ($unique_types as $type) {
-            echo "<option value='$type'>$type</option>";
-        }
-        ?>
-    </select>
-    <a style='  text-decoration: none;
-color: #fff;
-/* White color */
-background-color: green;
-/* Red color */
-padding: 10px 15px;
-border-radius: 5px;' href="afficherreclamation.php">Display All</a>
-    <input type="submit" value="Filter">
-
-</form>
-
-
-  <table class="my-table" border="1" align="center" id="reclamation-table">
+            <!-- Navbar End -->
+            
+                                        
+            <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
+  <thead>
     <tr>
-
-    <th>Type</th>
-      <th>Date</th>
-      <th>Sujet</th>
-      <th>Description</th>
-      <th>Etat</th>
-      <th>Reponse</th>
+    <th >ID</th>  
+      <th >Titre</th>
+      <th >Description</th>
+      <th >Date de création</th>
      
-
+      <th ></th>
     </tr>
-    <?php foreach ($listereclamations as $reclamation) {
-          $response = $reponseC->getResponseByReclamationId($reclamation['IDR']);
-          ?>
-      <tr>
-
-      <td><?php echo $reclamation['typer']; ?></td>
-        <td><?php echo $reclamation['dater']; ?></td>
-        <td><?php echo $reclamation['sujet']; ?></td>
-        <td><?php echo $reclamation['dess']; ?></td>
-        <td>
-        <?php
-$statut = $reclamation['statut'];
-if ($statut === "pas encore") {
-    echo "Pas encore traité";
-}elseif ($statut === "traité") {
-    echo "Traité";
-}
-elseif ($statut === "en train") {
-  echo "traitement en cour";
-}
-?>
-
-
-  
-        </td>
-        <td>
-                    <?php if ($statut == "en train") { ?>
-                    <?php if ($response) { ?>
-                      <a style='  
-        text-decoration: none;
-        color: #fff;
-        background-color: purple;
-        padding: 10px 15px;
-        border-radius: 5px;
-    ' href="<?php echo $response ? 'modifierreponseadmin.php?IDR=' . $reclamation['IDR'] : 'ajouterreponseadmin.php?IDR=' . $reclamation['IDR']; ?>">
-        <?php echo $response ? 'voir/modifier' : 'repondre'; ?>
-    </a>
-        <?php }} else if ($statut == "pas encore") { ?>
-            <span style="color: red;">Il n'y a pas de réponse pour le moment.</span>
-        <?php } else if ($statut == "traité") {  ?>
-            <span style="color: green;">Réclamation bien traitée.</span>
-            <?php }   ?>
-    </td>
-       
+  </thead>
+  <tbody>
+    <?php foreach ($forumList as $forum):?>
+      <tr style="background-color: #f2f2f2;">
+      <td ><?php echo $forum['id_forum'];?></td>
+        <td ><?php echo $forum['titre'];?></td>
+        <td ><?php echo $forum['description'];?></td>
+        <td ><?php echo $forum['date_creation'];?></td>
         
-  
-          <?php if ($statut == "en train") { ?>
-            <form method="POST" action="mark_done.php" style="display: inline;">
-            <input type="hidden" name="IDR" value="<?php echo $reclamation['IDR']; ?>">
-            <input type="submit" name="MarkDone" value="traité" style="background-color: #3498db; color: #fff; ">
-        </form>
-    <?php } ?>
+        <td>
+           <button type="button" class="#"><a href="supp_forum.php?id_forum=<?php echo $forum['id_forum']; ?>">Delete</a></button>
         </td>
+        <td>
+           <button type="button" class="#"><a href="modifier_forum.php?id_forum=<?php echo $forum['id_forum']; ?>">Modify</a></button>
+        </td>
+        <td>
+        <button type="button" class=""><a href="tablecomments.php?id_forum=<?= $forum['id_forum']; ?>">Comments</a></button>
+        </td>
+        
       </tr>
-      <?php } ?>
-  </table>
+    <?php endforeach;?>
+  </tbody>
+</table>
+<a href="statistics_forum.php"style="background-color: blue; color: white; padding: 8px 12px; border-radius: 3px; top: 100px; right: 150px;">Statistics</a>
+
+            
+                <script src="controle.js"></script>
+
+          
 
 
-  <style>
-    .my-table {
-      background-color: white;
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 1em;
-      font-family: Arial, sans-serif;
-      color: #333;
-    }
-
-    .my-table th,
-    .my-table td {
-      padding: 0.5em;
-      border: 1px solid #ccc;
-    }
-
-    .my-table th {
-      background-color: #f7f7f7;
-      text-align: left;
-      font-weight: bold;
-    }
-
-    .my-table td {
-      text-align: left;
-    }
-
-    .my-table td form {
-      display: inline-block;
-    }
-
-    input[type="submit"] {
-      background-color: #4CAF50;
-      /* Green color */
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    /* Style for the "annuler" link */
- 
-  </style>
-  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
     <!-- JavaScript Libraries -->
@@ -395,5 +286,6 @@ elseif ($statut === "en train") {
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-  </body>
-  </html>
+</body>
+
+</html>

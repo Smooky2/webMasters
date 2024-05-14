@@ -1,22 +1,30 @@
 <?php
-require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
-require_once 'C:\xampp\htdocs\projetfinal\Contoller\reponseC.php';
-$reclamationC = new reclamationC();
-$typer = isset($_GET["typer"]) ? $_GET["typer"] : 'all';
-$listereclamations = $reclamationC->afficherfilter($typer);
+include 'C:/xampp/htdocs/projetfinal/contoller/forumC.php';
+include 'C:/xampp/htdocs/projetfinal/Model/forum.php';
+$forumC = new forumC();
 
-if ($listereclamations) {
-    // Process $listereclamations as needed
-    foreach ($listereclamations as $reclamation) {
-        // Your logic here
-    }
-} else {
-    echo "No reclamation found."; // Display a message or handle the case when no reclamation is found
+$id_forum = isset($_GET['id_forum']) ? $_GET['id_forum'] : null;
+
+// Récupération de l'ID de l'événement et des valeurs modifiées
+if(isset($_POST['submit'])) {
+
+  
+    $title = isset($_POST['title']) ? $_POST['title'] : '';
+    $content = isset($_POST['content']) ? $_POST['content'] : '';
+	$currentDate = date('Y-m-d H:i:s');
+
+
+
+$forum = new forum($id_forum,$title,$content,$currentDate); 
+$forumC->modifyforum($forum);
+echo '<script>alert("Modification  réussie");</script>';
+header('Location:modifier_forum.php');
+exit();
+
+
 }
-$reponseC = new reponseC();
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,8 +57,31 @@ $reponseC = new reponseC();
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-   
+    <style>
+        /* Style pour positionner le formulaire */
+        .custom-form-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
+        /* Style pour l'arrière-plan */
+        body {
+            background-color: #f8f9fa; /* Couleur de fond */
+            margin: 0; /* Supprimer les marges par défaut */
+            padding: 0; /* Supprimer les marges par défaut */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
 </head>
 
 <body>
@@ -95,8 +126,8 @@ $reponseC = new reponseC();
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="ajout.php" class="dropdown-item">Ajout</a>
                             <a href="modifier_forum.php" class="dropdown-item">Modifier_forum</a>
-                            <a href="supp_forum.php" class="dropdown-item">Suppresion </a>
-                            <a href="view_forum.php" class="dropdown-item">affichage </a>
+                          
+							<a href="view_forum.php" class="dropdown-item">affichage </a>
                         </div>
                     </div>
                     <a href="evenement.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>entité evenement</a>
@@ -114,8 +145,29 @@ $reponseC = new reponseC();
                 </div>
             </nav>
         </div>
+        <!-- Sidebar End -->
+        <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner et barre de navigation latérale -->
+    </div>
+
+    <!-- Déplacez le formulaire ici -->
+    <div class="custom-form-container">
+    <div class="col-sm-6 col-xl-3">
+        <form action="" method="post" onsubmit="return validateForm()">
+			
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title">
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" rows="10"></textarea>
+            
+            <input type="submit" value="Publish"name="submit">
+        </form>
+        </div>
+    </div>
+            
+                <script src="controle.js"></script>
         <!-- Content Start -->
-     <div class="content">
+        <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
@@ -204,182 +256,14 @@ $reponseC = new reponseC();
                     </div>
                 </div>
             </nav>
-        <!-- Sidebar End -->
-     
+            <!-- Navbar End -->
 
 
+          
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <center>
-    <h1>Liste des reclamations</h1>
-  </center>
-  <form action="filtered_pageadmin.php" method="GET">
-    <label for="typer-filter">Filter by Type:</label>
-    <select id="typer-filter" name="typer">
-        <?php
-        $unique_types = $reclamationC->getUniqueTyperValues(); // Replace with your actual method to fetch data
-
-        foreach ($unique_types as $type) {
-            echo "<option value='$type'>$type</option>";
-        }
-        ?>
-    </select>
-    <a style='  text-decoration: none;
-color: #fff;
-/* White color */
-background-color: green;
-/* Red color */
-padding: 10px 15px;
-border-radius: 5px;' href="afficherreclamation.php">Display All</a>
-    <input type="submit" value="Filter">
-
-</form>
-
-
-  <table class="my-table" border="1" align="center" id="reclamation-table">
-    <tr>
-
-    <th>Type</th>
-      <th>Date</th>
-      <th>Sujet</th>
-      <th>Description</th>
-      <th>Etat</th>
-      <th>Reponse</th>
-     
-
-    </tr>
-    <?php foreach ($listereclamations as $reclamation) {
-          $response = $reponseC->getResponseByReclamationId($reclamation['IDR']);
-          ?>
-      <tr>
-
-      <td><?php echo $reclamation['typer']; ?></td>
-        <td><?php echo $reclamation['dater']; ?></td>
-        <td><?php echo $reclamation['sujet']; ?></td>
-        <td><?php echo $reclamation['dess']; ?></td>
-        <td>
-        <?php
-$statut = $reclamation['statut'];
-if ($statut === "pas encore") {
-    echo "Pas encore traité";
-}elseif ($statut === "traité") {
-    echo "Traité";
-}
-elseif ($statut === "en train") {
-  echo "traitement en cour";
-}
-?>
-
-
-  
-        </td>
-        <td>
-                    <?php if ($statut == "en train") { ?>
-                    <?php if ($response) { ?>
-                      <a style='  
-        text-decoration: none;
-        color: #fff;
-        background-color: purple;
-        padding: 10px 15px;
-        border-radius: 5px;
-    ' href="<?php echo $response ? 'modifierreponseadmin.php?IDR=' . $reclamation['IDR'] : 'ajouterreponseadmin.php?IDR=' . $reclamation['IDR']; ?>">
-        <?php echo $response ? 'voir/modifier' : 'repondre'; ?>
-    </a>
-        <?php }} else if ($statut == "pas encore") { ?>
-            <span style="color: red;">Il n'y a pas de réponse pour le moment.</span>
-        <?php } else if ($statut == "traité") {  ?>
-            <span style="color: green;">Réclamation bien traitée.</span>
-            <?php }   ?>
-    </td>
-       
-        
-  
-          <?php if ($statut == "en train") { ?>
-            <form method="POST" action="mark_done.php" style="display: inline;">
-            <input type="hidden" name="IDR" value="<?php echo $reclamation['IDR']; ?>">
-            <input type="submit" name="MarkDone" value="traité" style="background-color: #3498db; color: #fff; ">
-        </form>
-    <?php } ?>
-        </td>
-      </tr>
-      <?php } ?>
-  </table>
-
-
-  <style>
-    .my-table {
-      background-color: white;
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 1em;
-      font-family: Arial, sans-serif;
-      color: #333;
-    }
-
-    .my-table th,
-    .my-table td {
-      padding: 0.5em;
-      border: 1px solid #ccc;
-    }
-
-    .my-table th {
-      background-color: #f7f7f7;
-      text-align: left;
-      font-weight: bold;
-    }
-
-    .my-table td {
-      text-align: left;
-    }
-
-    .my-table td form {
-      display: inline-block;
-    }
-
-    input[type="submit"] {
-      background-color: #4CAF50;
-      /* Green color */
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    /* Style for the "annuler" link */
- 
-  </style>
-  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
     <!-- JavaScript Libraries -->
@@ -395,5 +279,6 @@ elseif ($statut === "en train") {
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-  </body>
-  </html>
+</body>
+
+</html>

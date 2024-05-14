@@ -1,7 +1,7 @@
 <?php
-require_once 'C:\xampp\htdocs\user+reservation+event\config.php';
+require_once 'C:\xampp\htdocs\projetfinal\config.php';
 
-include 'C:\xampp\htdocs\user+reservation+event\Model\reponse.php';
+include 'C:\xampp\htdocs\projetfinal\Model\reponse.php';
 class reponseC
 {
 

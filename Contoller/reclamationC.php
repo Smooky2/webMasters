@@ -1,11 +1,11 @@
 <?php
-require_once 'C:\xampp\htdocs\user+reservation+event\config.php';
+require_once 'C:\xampp\htdocs\projetfinal\config.php';
 
 
-require_once 'C:\xampp\htdocs\user+reservation+event\Model\reclamation.php';
+require_once 'C:\xampp\htdocs\projetfinal\Model\reclamation.php';
 
 
-require_once 'C:\xampp\htdocs\user+reservation+event\vendor\autoload.php';
+require_once 'C:\xampp\htdocs\projetfinal\vendor\autoload.php';
 
 
 

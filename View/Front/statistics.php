@@ -1,7 +1,7 @@
 <?php
 // Include necessary files and establish a database connection
-require_once 'C:\xampp\htdocs\user+reservation+event\Model\reclamation.php';
-require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reclamationC.php';
+require_once 'C:\xampp\htdocs\projetfinal\Model\reclamation.php';
+require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
 $reclamationC = new reclamationC();
 // Fetch statistics using the controller function
 $statistics =  $reclamationC->getReclamationStatistics();
@@ -18,8 +18,8 @@ foreach ($statistics as $row) {
 
 <?php
 // Include your forum controller
-require_once 'C:\xampp\htdocs\user+reservation+event\Model\reclamation.php';
-require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reclamationC.php';
+require_once 'C:\xampp\htdocs\projetfinal\Model\reclamation.php';
+require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
 
 $reclamationC = new  reclamationC();
 

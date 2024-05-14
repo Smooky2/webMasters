@@ -1,6 +1,6 @@
 <?php
-require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reclamationC.php';
-require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reponseC.php';
+require_once 'C:\xampp\htdocs\projetfinal\Contoller\reclamationC.php';
+require_once 'C:\xampp\htdocs\projetfinal\Contoller\reponseC.php';
 $reclamationC = new reclamationC();
 $typer = isset($_GET["typer"]) ? $_GET["typer"] : 'all';
 $listereclamations = $reclamationC->afficherfilter($typer);
