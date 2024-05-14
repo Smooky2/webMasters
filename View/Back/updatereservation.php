@@ -30,7 +30,7 @@ if(   !empty($_POST["id"])&&
       
         $res1=new reservations1();
         $res1->updateres($res, $_POST['id']);
-        header('Location: table.php');
+        header('Location: reservations.php');
         
     } else
         $error = "Missing information";
