@@ -123,7 +123,7 @@ session_start();
 			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 			                    <i class="fa fa-bars"></i>
 			                </button>
-			                <a class="navbar-brand" href="index.html">esprit<span>discovery</span></a>
+			                <a class="navbar-brand" href="index.php">esprit<span>discovery</span></a>
 
 			            </div><!--/.navbar-header-->
 			            <!-- End Header Navigation -->
@@ -131,7 +131,7 @@ session_start();
 			            <!-- Collect the nav links, forms, and other content for toggling -->
 						<div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
     <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-        <li class="scroll active"><a href="#home">accueil</a></li>
+        <li class="scroll active"><a href="index.php">accueil</a></li>
         <li class="scroll"><a href="#works">plus d'informations</a></li>
         <li class="scroll"><a href="#explore">réservation</a></li>
 		
@@ -165,7 +165,7 @@ session_start();
 
 
         <li class="scroll"><a href="#blog">forum</a></li>
-        <li class="scroll"><a href="#contact">réclamation</a></li>
+        <li class="#"><a href="afficherreclamation.php">réclamation</a></li>
 
         <?php
         // Check if user is logged in

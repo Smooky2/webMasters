@@ -1,3 +1,48 @@
+<?php
+
+
+require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reclamationC.php';
+require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reponseC.php';
+require_once 'C:\xampp\htdocs\user+reservation+event\Model\reponse.php';
+$error = "";
+
+// create reponse
+$reponse = null;
+
+// create an instance of the controller
+$reponseC = new reponseC();
+$reclamationC = new reclamationC();
+
+if (
+
+
+  isset($_POST["sujet"]) &&
+  isset($_POST["dess"])
+) {
+  if (
+
+
+    !empty($_POST["sujet"]) &&
+    !empty($_POST["dess"])
+  ) {
+    $reponse = new reponse(
+      null,
+      $_GET["IDR"],
+      $_POST['dater'],
+      $_POST['sujet'],
+      $_POST['dess']
+
+    );
+    $reponseC->ajouterreponse($reponse);
+    $reclamationC->updateStatuts($_GET["IDR"], "traité");
+    
+    header('location:afficherreclamation.php');
+  } else
+    $error = "Missing information";
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +74,8 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+   
+
 </head>
 
 <body>
@@ -59,29 +106,27 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="index.php" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Accueil</a>
+                    <a href="index.html" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Accueil</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>entité réservation</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="hotel.php" class="dropdown-item">Nos Hotels</a>
-                            <a href="formHotel.php" class="dropdown-item">formaulaire Hotel</a>
-                            <a href="reservations.php" class="dropdown-item">Nos réservations </a>
-                            <a href="rechercherhotel.php" class="dropdown-item">rechercher </a>
-                            <a href="calendar.php" class="dropdown-item">calendrier </a>
-
+                            <a href="hotel.html" class="dropdown-item">Nos Hotels</a>
+                            <a href="forfait.html" class="dropdown-item">Nos forfaits</a>
+                            <a href="reservations.html" class="dropdown-item">Nos réservations </a>
                         </div>
                     </div>
-                    
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>evenement</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>entité forum</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="ajoutEvent.php" class="dropdown-item"> Ajout evenement</a>
-                            <a href="listEvents.php" class="dropdown-item">Nos evenement</a>
-                            
+                            <a href="ajout.php" class="dropdown-item">Ajout</a>
+                            <a href="modifier_forum.php" class="dropdown-item">Modifier_forum</a>
+                            <a href="supp_forum.php" class="dropdown-item">Suppresion </a>
+                            <a href="view_forum.php" class="dropdown-item">affichage </a>
                         </div>
                     </div>
-                    <a href="afficherreclamation.php" class="nav-item nav-link"><i class="fa fa-table me-2"></i>entité réclamation</a>
-                    <a href="user.php" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>entité user</a>
+                    <a href="evenement.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>entité evenement</a>
+                    <a href="reclamation.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>entité réclamation</a>
+                    <a href="user.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>entité user</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -95,10 +140,147 @@
             </nav>
         </div>
         <!-- Sidebar End -->
+        <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner et barre de navigation latérale -->
+    </div>
+<style>
+            input[type="submit"] {
+                background-color: #4CAF50;
+                /* Green color */
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
 
+            input[type="reset"] {
+                background-color: #e74c3c;
+                /* Green color */
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
 
-        <!-- Content Start -->
-        <div class="content">
+            /* Style for the "annuler" link */
+       
+
+            table {
+              background-color: white;
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 1em;
+      font-family: Arial, sans-serif;
+      color: #333;
+            }
+
+            td {
+
+                padding: 10px;
+                /* Adds padding around the table cells */
+                text-align: left;
+                /* Aligns the text to the left */
+            }
+
+            label {
+                color: black;
+                font-weight: bold;
+                /* Makes the label text bold */
+            }
+        </style>
+        <center>
+    <h1>Repondre</h1>
+  </center>
+    <body>
+      <button><a href="afficherreclamation.php">Retour à la liste des reclamations</a></button>
+      <hr>
+
+      <div id="error">
+        <?php echo $error; ?>
+      </div>
+      <script>
+        function validateForm() {
+          let Y = document.forms["myForm"]["sujet"].value;
+          if (Y == "") {
+            alert("sujet must be filled out");
+            return false;
+          }
+          let Z = document.forms["myForm"]["dess"].value;
+          if (Z == "") {
+            alert("description of  must be filled out");
+            return false;
+          }
+
+        }
+      </script>
+      <style>
+        table {
+          background-color: white;
+          margin: 0 auto;
+          /* Centers the table horizontally */
+          width: 80%;
+          /* Sets the width of the table */
+          max-width: 800px;
+          /* Sets the maximum width of the table */
+          border-collapse: collapse;
+          /* Collapses the borders between table cells */
+        }
+
+        td {
+
+          padding: 10px;
+          /* Adds padding around the table cells */
+          text-align: left;
+          /* Aligns the text to the left */
+        }
+
+        label {
+          color: black;
+          font-weight: bold;
+          /* Makes the label text bold */
+        }
+      </style>
+      <?php
+
+      $resultats = $reclamationC->afficherreclamations();
+      ?>
+      <form name="myForm" action="" onsubmit="return validateForm()" method="POST">
+        <table border="1" align="center">
+    
+    
+          <tr>
+            <td>
+              <label for="sujet">sujet de reponse:
+              </label>
+            </td>
+            <td>
+              <input type="text" name="sujet" id="sujet">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="dess">description de reponse :
+              </label>
+            </td>
+            <td>
+              <input type="text" name="dess" id="dess">
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <input type="submit" value="Envoyer">
+            </td>
+            <td>
+              <input type="reset" value="Annuler">
+            </td>
+          </tr>
+        </table>
+      </form>
+       <!-- Content Start -->
+     <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
@@ -190,6 +372,7 @@
             <!-- Navbar End -->
 
 
+          
 
 
         <!-- Back to Top -->

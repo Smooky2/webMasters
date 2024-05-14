@@ -1,3 +1,23 @@
+<?php
+require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reclamationC.php';
+require_once 'C:\xampp\htdocs\user+reservation+event\Contoller\reponseC.php';
+$reclamationC = new reclamationC();
+$typer = isset($_GET["typer"]) ? $_GET["typer"] : 'all';
+$listereclamations = $reclamationC->afficherfilter($typer);
+
+if ($listereclamations) {
+    // Process $listereclamations as needed
+    foreach ($listereclamations as $reclamation) {
+        // Your logic here
+    }
+} else {
+    echo "No reclamation found."; // Display a message or handle the case when no reclamation is found
+}
+$reponseC = new reponseC();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +49,8 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+   
+
 </head>
 
 <body>
@@ -59,29 +81,27 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="index.php" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Accueil</a>
+                    <a href="index.html" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Accueil</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>entité réservation</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="hotel.php" class="dropdown-item">Nos Hotels</a>
-                            <a href="formHotel.php" class="dropdown-item">formaulaire Hotel</a>
-                            <a href="reservations.php" class="dropdown-item">Nos réservations </a>
-                            <a href="rechercherhotel.php" class="dropdown-item">rechercher </a>
-                            <a href="calendar.php" class="dropdown-item">calendrier </a>
-
+                            <a href="hotel.html" class="dropdown-item">Nos Hotels</a>
+                            <a href="forfait.html" class="dropdown-item">Nos forfaits</a>
+                            <a href="reservations.html" class="dropdown-item">Nos réservations </a>
                         </div>
                     </div>
-                    
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>evenement</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>entité forum</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="ajoutEvent.php" class="dropdown-item"> Ajout evenement</a>
-                            <a href="listEvents.php" class="dropdown-item">Nos evenement</a>
-                            
+                            <a href="ajout.php" class="dropdown-item">Ajout</a>
+                            <a href="modifier_forum.php" class="dropdown-item">Modifier_forum</a>
+                            <a href="supp_forum.php" class="dropdown-item">Suppresion </a>
+                            <a href="view_forum.php" class="dropdown-item">affichage </a>
                         </div>
                     </div>
-                    <a href="afficherreclamation.php" class="nav-item nav-link"><i class="fa fa-table me-2"></i>entité réclamation</a>
-                    <a href="user.php" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>entité user</a>
+                    <a href="evenement.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>entité evenement</a>
+                    <a href="reclamation.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>entité réclamation</a>
+                    <a href="user.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>entité user</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -94,11 +114,8 @@
                 </div>
             </nav>
         </div>
-        <!-- Sidebar End -->
-
-
         <!-- Content Start -->
-        <div class="content">
+     <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
@@ -187,13 +204,182 @@
                     </div>
                 </div>
             </nav>
-            <!-- Navbar End -->
+        <!-- Sidebar End -->
+     
 
 
 
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <center>
+    <h1>Liste des reclamations</h1>
+  </center>
+  <form action="filtered_pageadmin.php" method="GET">
+    <label for="typer-filter">Filter by Type:</label>
+    <select id="typer-filter" name="typer">
+        <?php
+        $unique_types = $reclamationC->getUniqueTyperValues(); // Replace with your actual method to fetch data
+
+        foreach ($unique_types as $type) {
+            echo "<option value='$type'>$type</option>";
+        }
+        ?>
+    </select>
+    <a style='  text-decoration: none;
+color: #fff;
+/* White color */
+background-color: green;
+/* Red color */
+padding: 10px 15px;
+border-radius: 5px;' href="afficherreclamation.php">Display All</a>
+    <input type="submit" value="Filter">
+
+</form>
+
+
+  <table class="my-table" border="1" align="center" id="reclamation-table">
+    <tr>
+
+    <th>Type</th>
+      <th>Date</th>
+      <th>Sujet</th>
+      <th>Description</th>
+      <th>Etat</th>
+      <th>Reponse</th>
+     
+
+    </tr>
+    <?php foreach ($listereclamations as $reclamation) {
+          $response = $reponseC->getResponseByReclamationId($reclamation['IDR']);
+          ?>
+      <tr>
+
+      <td><?php echo $reclamation['typer']; ?></td>
+        <td><?php echo $reclamation['dater']; ?></td>
+        <td><?php echo $reclamation['sujet']; ?></td>
+        <td><?php echo $reclamation['dess']; ?></td>
+        <td>
+        <?php
+$statut = $reclamation['statut'];
+if ($statut === "pas encore") {
+    echo "Pas encore traité";
+}elseif ($statut === "traité") {
+    echo "Traité";
+}
+elseif ($statut === "en train") {
+  echo "traitement en cour";
+}
+?>
+
+
+  
+        </td>
+        <td>
+                    <?php if ($statut == "en train") { ?>
+                    <?php if ($response) { ?>
+                      <a style='  
+        text-decoration: none;
+        color: #fff;
+        background-color: purple;
+        padding: 10px 15px;
+        border-radius: 5px;
+    ' href="<?php echo $response ? 'modifierreponseadmin.php?IDR=' . $reclamation['IDR'] : 'ajouterreponseadmin.php?IDR=' . $reclamation['IDR']; ?>">
+        <?php echo $response ? 'voir/modifier' : 'repondre'; ?>
+    </a>
+        <?php }} else if ($statut == "pas encore") { ?>
+            <span style="color: red;">Il n'y a pas de réponse pour le moment.</span>
+        <?php } else if ($statut == "traité") {  ?>
+            <span style="color: green;">Réclamation bien traitée.</span>
+            <?php }   ?>
+    </td>
+       
+        
+  
+          <?php if ($statut == "en train") { ?>
+            <form method="POST" action="mark_done.php" style="display: inline;">
+            <input type="hidden" name="IDR" value="<?php echo $reclamation['IDR']; ?>">
+            <input type="submit" name="MarkDone" value="traité" style="background-color: #3498db; color: #fff; ">
+        </form>
+    <?php } ?>
+        </td>
+      </tr>
+      <?php } ?>
+  </table>
+
+
+  <style>
+    .my-table {
+      background-color: white;
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 1em;
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+
+    .my-table th,
+    .my-table td {
+      padding: 0.5em;
+      border: 1px solid #ccc;
+    }
+
+    .my-table th {
+      background-color: #f7f7f7;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .my-table td {
+      text-align: left;
+    }
+
+    .my-table td form {
+      display: inline-block;
+    }
+
+    input[type="submit"] {
+      background-color: #4CAF50;
+      /* Green color */
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Style for the "annuler" link */
+ 
+  </style>
+  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
     <!-- JavaScript Libraries -->
@@ -209,6 +395,5 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-</body>
-
-</html>
+  </body>
+  </html>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require 'C:\xampp\htdocs\user+reservation+event\Contoller\userC.php';
+include_once 'C:\xampp\htdocs\user+reservation+event\Contoller\userC.php';
 require '../../Model/user.php';
 
 $errorMessage = '';
